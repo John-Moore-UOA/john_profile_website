@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["XR", "HCI"]
 stack: ["Unity", "C#", "XR Interaction Toolkit", "LSL", "Quest 3S"]
 featured: false
-order: 30
+order: 12
 related: []
 cover: "Screenshot of the VR room with five seated audience members and coloured attention auras above their heads."
 ---

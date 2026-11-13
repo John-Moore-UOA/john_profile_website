@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["AI", "Systems", "Tools"]
 stack: ["MCP", "Python", "HTTP/REST", "Claude Code skills", "JavaScript"]
 featured: false
-order: 30
+order: 13
 related: ["tts-studio"]
 cover: "Architecture diagram of Claude, the MCP server, the app server and the open browser UI."
 ---

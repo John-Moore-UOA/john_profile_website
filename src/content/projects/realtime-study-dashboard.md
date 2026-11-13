@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["Physiological Computing", "XR", "Systems"]
 stack: ["Python", "FastAPI", "React", "LiveKit", "LSL", "WebSocket", "Unity"]
 featured: false
-order: 20
+order: 3
 related: ["masters-empathic-avatar"]
 cover: "Dashboard screenshot: signal charts beside the live participant VR view."
 ---

@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["Tools"]
 stack: ["Python", "Flask", "JavaScript", "zxing-cpp"]
 featured: false
-order: 80
+order: 19
 cover: "A QR code with a logo blended into it, next to the live-preview controls."
 ---
 
