@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site, experience, education, skills, publications, certifications } from '../data/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).slice(0, 5);
+---
+<Base title="CV" description={`Curriculum vitae of ${site.name}.`}>
+  <div class="wrap cv-wrap">
+    <div class="cv-bar">
+      <p>This page is my CV. Use your browser’s print to save it as a PDF.</p>
+      <button type="button" class="btn ink" onclick="window.print()">Print or save as PDF</button>
+    </div>
+
+    <article class="sheet">
+      <header class="cv-head">
+        <div>
+          <h1>{site.name}</h1>
+          <p class="cv-role">Master of Engineering candidate, Bioengineering · {site.lab.name}, {site.abi.name}</p>
+        </div>
+        <ul class="cv-contact">
+          <li>{site.location}</li>
+          {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+          <li><a href={site.links.github}>github.com/John-Moore-UOA</a></li>
+          <li><a href={site.links.linkedin}>linkedin.com/in/johnmoore03</a></li>
+          <li><a href={site.links.orcid}>ORCID 0009-0001-6046-8794</a></li>
+        </ul>
+      </header>
+
+      <p class="cv-summary">{site.lede}</p>
+
+      <section>
+        <h2>Education</h2>
+        {education.map((e) => (
+          <div class="row"><span class="d">{e.when}</span><div><h3>{e.title}</h3><p>{e.org}{e.note && ` — ${e.note}`}</p></div></div>
+        ))}
+      </section>
+
+      <section>
+        <h2>Publications</h2>
+        {publications.map((p) => (
+          <div class="row"><span class="d">{p.year}</span><div><h3>{p.title}</h3><p><em>{p.venue}</em>. {p.authors}. <a href={p.url}>doi:{p.doi}</a></p></div></div>
+        ))}
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        {experience.map((x) => (
+          <div class="row"><span class="d">{x.when}</span><div><h3>{x.title}, {x.org}</h3><p>{x.note}</p></div></div>
+        ))}
+      </section>
+
+      <section>
+        <h2>Selected projects</h2>
+        {projects.map((p) => (
+          <div class="row"><span class="d">{p.data.year}</span><div><h3><a href={`/projects/${p.id}/`}>{p.data.title}</a></h3><p>{p.data.summary}</p></div></div>
+        ))}
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        {skills.map((s) => (
+          <div class="row"><span class="d">{s.group}</span><p>{s.items.join(', ')}</p></div>
+        ))}
+      </section>
+
+      <section>
+        <h2>Certifications &amp; service</h2>
+        {certifications.map((c) => (
+          <div class="row"><span class="d">{c.when}</span><p><strong>{c.title}</strong>, {c.org}</p></div>
+        ))}
+      </section>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .cv-wrap { padding-block: 2.5rem 6rem; max-width: 56rem; }
+  .cv-bar { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; color: var(--ink-2); font-size: 1rem; }
+  :global(body):has(.sheet) { background: var(--sky-wash); }
+  /* The sheet is paper: light, so it reads like the printed document */
+  .sheet {
+    --ink: #13233A; --ink-soft: #3E5670; --rule: #C9D6E3;
+    background: #fff; color: var(--ink); border-radius: 4px; padding: clamp(1.5rem, 5vw, 3.5rem);
+    box-shadow: 0 0 0 1px var(--rule), 0 30px 60px -34px rgb(11 22 38 / .45); font-size: 1rem; line-height: 1.55;
+  }
+  .sheet a { color: var(--sky-ink); }
+  .sheet h1, .sheet h2, .sheet h3 { color: var(--ink); }
+  .cv-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--ink); }
+  .cv-head h1 { font: 700 2.4rem/1 var(--sans); letter-spacing: -0.03em; }
+  .cv-role { margin-top: .5rem; color: var(--ink-soft); max-width: 36ch; }
+  .cv-contact { list-style: none; margin: 0; padding: 0; text-align: right; font-size: .92rem; color: var(--ink-soft); display: grid; gap: .15rem; }
+  .cv-summary { margin: 1.5rem 0 0; font-size: 1.05rem; }
+  .sheet section { margin-top: 2rem; padding: 0; }
+  .sheet h2 { font: 700 .85rem/1 var(--sans); text-transform: uppercase; letter-spacing: .1em; color: var(--ink); padding-bottom: .5rem; border-bottom: 1px solid var(--ink); }
+  .sheet h2::before { content: ''; display: inline-block; width: .6rem; height: .6rem; margin-right: .55rem; border-radius: 2px; background: var(--amber); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .row { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.25rem; padding: .8rem 0; border-bottom: 1px solid var(--rule); }
+  .row:last-child { border-bottom: 0; }
+  .d { color: var(--ink-soft); font-size: .9rem; font-variant-numeric: tabular-nums; }
+  .row h3 { font: 650 1rem/1.35 var(--sans); letter-spacing: 0; }
+  .row p { color: var(--ink-soft); }
+  @media (max-width: 600px) {
+    .row { grid-template-columns: 1fr; gap: .2rem; }
+    .cv-contact { text-align: left; }
+  }
+  @media print {
+    :global(.nav), :global(.foot), :global(.skip), .cv-bar { display: none !important; }
+    :global(body) { background: #fff !important; }
+    .cv-wrap { padding: 0; max-width: none; width: 100%; }
+    .sheet { box-shadow: none; padding: 0; background: #fff; }
+    .row { break-inside: avoid; }
+  }
+</style>

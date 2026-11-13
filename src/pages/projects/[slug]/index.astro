@@ -1,0 +1,115 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import { allProjects, journalFor, referenceFor, entrySlug, fmtDate } from '../../../lib/projects';
+import '../../../styles/article.css';
+
+export async function getStaticPaths() {
+  const all = await allProjects();
+  return all.map((p, i) => ({ params: { slug: p.id }, props: { p, all, next: all[(i + 1) % all.length] } }));
+}
+const { p, all, next } = Astro.props;
+const { Content, headings } = await render(p);
+const d = p.data;
+const journal = await journalFor(p.id);
+const ref = await referenceFor(p.id);
+const refHeadings = ref ? (await render(ref)).headings.filter((h) => h.depth === 2 && !/^(why|overview|process|current status)$/i.test(h.text)) : [];
+const related = all.filter((x) => d.related.includes(x.id));
+
+const toc = [
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ href: `#${h.slug}`, text: h.text })),
+  ...(refHeadings.length ? [{ href: '#system', text: 'System at a glance' }] : []),
+  ...(journal.length ? [{ href: '#journal', text: `Design journal (${journal.length})` }] : []),
+];
+---
+<Base title={d.title} description={d.summary}>
+  <article class="page">
+    <header class="page-head field">
+      <div class="wrap head">
+        <a class="back" href="/#projects"><Icon name="back" />All projects</a>
+        <h1>{d.title}</h1>
+        <p class="sum">{d.summary}</p>
+      </div>
+    </header>
+
+    <div class="wrap cols">
+      <aside class="spec" aria-label="Project details">
+        <dl>
+          <div><dt>Year</dt><dd class="mono">{d.year}</dd></div>
+          <div><dt>Role</dt><dd>{d.role}</dd></div>
+          <div><dt>Areas</dt><dd>{d.categories.join(', ')}</dd></div>
+          <div><dt>Stack</dt><dd><ul class="stack">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul></dd></div>
+          {(d.links.github || d.links.demo) && (
+            <div><dt>Links</dt><dd class="links">
+              {d.links.github && <a href={d.links.github} rel="noopener"><Icon name="github" />Source</a>}
+              {d.links.demo && <a href={d.links.demo} rel="noopener"><Icon name="external" />Live demo</a>}
+            </dd></div>
+          )}
+        </dl>
+        {toc.length > 2 && (
+          <nav class="toc" aria-label="On this page">
+            <p>On this page</p>
+            <ol>{toc.map((t) => <li><a href={t.href}>{t.text}</a></li>)}</ol>
+          </nav>
+        )}
+      </aside>
+
+      <div class="body">
+        {d.image ? (
+          <figure class="fig cover"><img src={d.image} alt={d.cover ?? d.title} /></figure>
+        ) : d.cover && (
+          <figure class="fig fig-slot cover">
+            <div class="slot" role="img" aria-label={`Cover image to come: ${d.cover}`}>
+              <span class="slot-tag">Cover to come</span><p>{d.cover}</p>
+            </div>
+          </figure>
+        )}
+        <div class="prose"><Content /></div>
+
+        {refHeadings.length > 0 && (
+          <section class="block" id="system" aria-labelledby="system-h">
+            <h2 id="system-h">System at a glance</h2>
+            <p class="lead">A detailed reference for each part of the system: what it is and how it is built.</p>
+            <ul class="glance">
+              {refHeadings.map((h) => (
+                <li><a href={`/projects/${p.id}/system/#${h.slug}`}><span>{h.text}</span><Icon name="arrow" /></a></li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {journal.length > 0 && (
+          <section class="block" id="journal" aria-labelledby="journal-h">
+            <h2 id="journal-h">Design journal</h2>
+            <p class="lead">Week by week: what I built, the decisions behind it, and what I learned.</p>
+            <ol class="timeline">
+              {journal.map((e) => (
+                <li>
+                  <a class="entry" href={`/projects/${p.id}/log/${entrySlug(e)}/`}>
+                    <span class="entry-meta"><strong>{e.data.session}</strong><time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time></span>
+                    <h3>{e.data.title}</h3>
+                    <p>{e.data.summary}</p>
+                    {e.data.facets.length > 0 && <ul class="facets">{e.data.facets.map((f) => <li>{f}</li>)}</ul>}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {related.length > 0 && (
+          <aside class="related">
+            <h2>Related</h2>
+            {related.map((r) => <a href={`/projects/${r.id}/`}><span>{r.data.title}</span><Icon name="arrow" /></a>)}
+          </aside>
+        )}
+        <a class="next navy" href={`/projects/${next.id}/`}>
+          <span class="nl">Next project</span>
+          <span class="nt">{next.data.title}</span>
+          <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+  </article>
+</Base>

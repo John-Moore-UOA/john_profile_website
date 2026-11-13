@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+interface Props { title?: string; description?: string; }
+const { title, description = site.lede } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · XR, HCI & AI`;
+const home = Astro.url.pathname === '/';
+const nav = [
+  ['Projects', 'projects'], ['Publications', 'publications'], ['Courses', 'courses'], ['Experience', 'experience'], ['Contact', 'contact'],
+];
+---
+<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#F4FAFF" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body class={home ? 'home' : undefined}>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="/">{site.name}</a>
+      <nav aria-label="Sections">
+        <ul>
+          {nav.map(([label, id]) => <li><a href={home ? `#${id}` : `/#${id}`} data-spy={id}>{label}</a></li>)}
+        </ul>
+      </nav>
+      <a class="btn ink" href="/cv/">CV</a>
+    </div>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="foot navy">
+    <div class="wrap">
+      <span>© {new Date().getFullYear()} {site.name}</span>
+      <span>{site.location}</span>
+    </div>
+  </footer>
+  {home && (
+    <script>
+      const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('[data-spy]')].map((a) => [a.dataset.spy!, a]));
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) {
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          links.get(e.target.id)?.setAttribute('aria-current', 'true');
+        }
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      links.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+    </script>
+  )}
+</body>
+</html>

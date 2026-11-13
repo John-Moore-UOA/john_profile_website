@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+export async function getStaticPaths() {
+  return (await getCollection('courses')).map((c) => ({ params: { slug: c.id }, props: { c } }));
+}
+const { c } = Astro.props;
+const { Content } = await render(c);
+const d = c.data;
+---
+<Base title={`${d.code} ${d.name}`} description={d.desc}>
+  <article class="page">
+    <header class="page-head field">
+      <div class="wrap head">
+        <a class="back" href="/#courses"><Icon name="back" />All courses</a>
+        <h1>{d.name}</h1>
+        <p class="sum">{d.desc}</p>
+        <dl class="facts">
+          <div><dt>Course</dt><dd class="mono">{d.code} · {d.term}</dd></div>
+          <div><dt>Area</dt><dd>{d.area}</dd></div>
+          <div><dt>Degree</dt><dd>BE(Hons) Software Engineering</dd></div>
+          <div><dt>Institution</dt><dd>University of Auckland</dd></div>
+        </dl>
+      </div>
+    </header>
+    <div class="wrap"><div class="prose"><Content /></div></div>
+  </article>
+</Base>
+<style>
+  .page { padding-bottom: clamp(4rem, 8vw, 6rem); }
+  .head { display: grid; gap: 1.3rem; justify-items: start; }
+  .head h1 { margin-top: 1.5rem; }
+  .facts { justify-self: stretch; position: relative; display: flex; flex-wrap: wrap; gap: 1rem 3rem; margin: 1.25rem 0 0; padding-top: 1.3rem; border-top: 1px solid var(--rule); }
+  .facts::before { content: ''; position: absolute; left: 0; top: -2px; width: 9rem; height: 3px; background: var(--bg); }
+  .facts dt { font-size: .95rem; font-weight: 600; color: var(--ink-3); }
+  .facts dd { margin: .2rem 0 0; color: var(--ink); font-weight: 500; }
+  .facts dd.mono { font-size: 1rem; }
+</style>

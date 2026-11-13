@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../../layouts/Base.astro';
+import Icon from '../../../../components/Icon.astro';
+import { journalFor, entrySlug, fmtDate, slugify } from '../../../../lib/projects';
+import '../../../../styles/article.css';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const paths = [];
+  for (const p of projects) {
+    const entries = await journalFor(p.id);
+    entries.forEach((e, i) => paths.push({
+      params: { slug: p.id, entry: entrySlug(e) },
+      props: { p, e, i, total: entries.length, prev: entries[i - 1], next: entries[i + 1] },
+    }));
+  }
+  return paths;
+}
+const { p, e, i, total, prev, next } = Astro.props;
+const { Content, headings } = await render(e);
+const toc = headings.filter((h) => h.depth === 2);
+---
+<Base title={`${e.data.title} · ${p.data.title}`} description={e.data.summary}>
+  <article class="page">
+    <header class="page-head field">
+      <div class="wrap head">
+        <a class="back" href={`/projects/${p.id}/#journal`}><Icon name="back" />{p.data.title}</a>
+        <p class="entry-meta"><strong>{e.data.session}</strong><time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time><span>Entry {i + 1} of {total}</span></p>
+        <h1>{e.data.title}</h1>
+        <p class="sum">{e.data.summary}</p>
+      </div>
+    </header>
+
+    <div class="wrap cols">
+      <aside class="spec" aria-label="Entry details">
+        {e.data.facets.length > 0 && (
+          <dl>
+            <div><dt>Parts of the system</dt><dd>
+              <ul class="facets">{e.data.facets.map((f) => <li><a href={`/projects/${p.id}/system/#${slugify(f)}`}>{f}</a></li>)}</ul>
+            </dd></div>
+          </dl>
+        )}
+        {toc.length > 1 && (
+          <nav class="toc" aria-label="On this page">
+            <p>In this entry</p>
+            <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+      </aside>
+
+      <div class="body">
+        <div class="prose"><Content /></div>
+        <nav class="pager" aria-label="Journal entries">
+          {prev && <a href={`/projects/${p.id}/log/${entrySlug(prev)}/`}><span>← {prev.data.session}</span>{prev.data.title}</a>}
+          {next && <a class="nx" href={`/projects/${p.id}/log/${entrySlug(next)}/`}><span>{next.data.session} →</span>{next.data.title}</a>}
+        </nav>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .facets a { color: inherit; text-decoration: none; }
+  .facets a:hover { text-decoration: underline; }
+</style>

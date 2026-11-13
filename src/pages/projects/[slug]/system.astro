@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import '../../../styles/article.css';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const refs = await getCollection('reference');
+  return refs.flatMap((ref) => {
+    const p = projects.find((x) => x.id === ref.data.project);
+    return p ? [{ params: { slug: p.id }, props: { p, ref } }] : [];
+  });
+}
+const { p, ref } = Astro.props;
+const { Content, headings } = await render(ref);
+const toc = headings.filter((h) => h.depth === 2);
+---
+<Base title={`${ref.data.title} · ${p.data.title}`} description={`Detailed system reference for ${p.data.title}.`}>
+  <article class="page">
+    <header class="page-head field">
+      <div class="wrap head">
+        <a class="back" href={`/projects/${p.id}/`}><Icon name="back" />{p.data.title}</a>
+        <h1>{ref.data.title}</h1>
+        <p class="sum">Every part of the system, facet by facet: what it is and how it is built. For the reasoning behind each decision, read the design journal.</p>
+      </div>
+    </header>
+    <div class="wrap cols">
+      <aside class="spec" aria-label="Sections">
+        <nav class="toc" aria-label="On this page">
+          <p>Facets</p>
+          <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+      </aside>
+      <div class="body">
+        <div class="prose"><Content /></div>
+        <a class="next navy" href={`/projects/${p.id}/#journal`}>
+          <span class="nl">Why it is built this way</span>
+          <span class="nt">Read the design journal</span>
+          <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+  </article>
+</Base>
