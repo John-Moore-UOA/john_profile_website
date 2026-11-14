@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["AI", "Tools"]
 stack: ["Python", "Chatterbox", "Qwen3-TTS", "Whisper", "MCP", "HTML/JS"]
 featured: false
-order: 40
+order: 6
 related: ["live-app-mcp"]
 cover: "Screenshot of the Studio Story tab with lines, emotion arc and render queue dock."
 ---

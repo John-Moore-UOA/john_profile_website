@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["XR", "Physiological Computing", "HCI"]
 stack: ["Unity", "C#", "LSL", "Netcode for GameObjects", "Python", "Three.js"]
 featured: false
-order: 20
+order: 4
 related: []
 cover: "Screenshot of the Mood Forest scene in Unity, showing the forest environment reacting to partner EEG state."
 ---

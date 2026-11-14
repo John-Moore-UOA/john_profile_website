@@ -7,7 +7,7 @@ role: "Developer"
 categories: ["Systems", "Tools"]
 stack: ["Astro", "Next.js", "TypeScript", "Cloud Run", "Turso", "Cloudflare R2"]
 featured: false
-order: 60
+order: 17
 cover: "Screenshot of the new lab website home page."
 ---
 

@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["AI", "HCI"]
 stack: ["Python", "Ollama", "Gemini", "faster-whisper", "Kokoro TTS", "YOLOE", "Unity"]
 featured: false
-order: 10
+order: 2
 related: []
 cover: "Screenshot of the live page: webcam view with object masks, track ids and belief bars."
 ---

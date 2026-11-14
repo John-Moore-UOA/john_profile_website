@@ -7,7 +7,7 @@ role: "Solo developer"
 categories: ["AI", "Tools"]
 stack: ["Gemini", "Python", "PowerShell", "Node.js", "Claude Code skills"]
 featured: false
-order: 70
+order: 16
 cover: "Terminal screenshot of a brainstorm run and the resulting brief file."
 ---
 

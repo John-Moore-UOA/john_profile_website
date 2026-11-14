@@ -15,4 +15,6 @@ desc: "A supervised research project undertaken across the engineering disciplin
 
 ## What I built or wrote
 
+See the project page: [VR PIN Entry Study (Part IV Project)](/projects/vr-pin-entry-study/).
+
 ## How it connects to my work

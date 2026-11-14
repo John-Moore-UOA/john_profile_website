@@ -7,7 +7,7 @@ role: "Solo researcher and developer"
 categories: ["XR", "Physiological Computing", "HCI"]
 stack: ["Unity", "C#", "Character Creator", "XR Interaction Toolkit"]
 featured: false
-order: 40
+order: 14
 related: ["eeg-visualization-multiplayer"]
 cover: "Screenshot of the high-fidelity talking head avatar in VR with a heart-rate indicator."
 ---

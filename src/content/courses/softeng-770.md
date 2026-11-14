@@ -15,4 +15,6 @@ desc: "A team-based capstone engineering project delivered to an external stakeh
 
 ## What I built or wrote
 
+See the project page: [Capstone: Networked Device Platform](/projects/capstone-device-platform/).
+
 ## How it connects to my work

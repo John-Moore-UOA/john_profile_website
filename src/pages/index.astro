@@ -81,6 +81,8 @@ const byArea = AREAS.map((area) => ({
         {usedCats.map((c) => <button type="button" aria-pressed="false" data-cat={c} data-c={c}>{c}</button>)}
       </div>
 
+      <div class="carousel">
+      <div class="viewport"><div class="track">
       <ul class="grid">
         {rest.map((p) => (
           <li data-cats={p.data.categories.join('|')}>
@@ -100,6 +102,13 @@ const byArea = AREAS.map((area) => ({
           </li>
         ))}
       </ul>
+      </div></div>
+      <nav class="pager" aria-label="Project pages" hidden>
+        <button type="button" class="prev" aria-label="Previous projects">&larr;</button>
+        <span class="dots"></span>
+        <button type="button" class="next" aria-label="Next projects">&rarr;</button>
+      </nav>
+      </div>
       <p class="empty" hidden>No projects in this area yet.</p>
     </div>
   </section>
@@ -211,10 +220,49 @@ const byArea = AREAS.map((area) => ({
 </Base>
 
 <script>
+  // Carousel: chunk the visible cards into pages of 8 (4 x 2) that slide horizontally.
+  const PER = 8;
+  const track = document.querySelector<HTMLElement>('.track')!;
+  const pager = document.querySelector<HTMLElement>('.pager')!;
+  const dots = pager.querySelector<HTMLElement>('.dots')!;
+  const allRows = [...document.querySelectorAll<HTMLElement>('.grid > li')];
+  // Clone the server-rendered list so new pages keep Astro's scoped-style attribute.
+  const template = track.querySelector<HTMLElement>('.grid')!.cloneNode(false) as HTMLElement;
+  let page = 0, pages = 1;
+  const go = (n: number) => {
+    page = Math.max(0, Math.min(pages - 1, n));
+    track.style.transform = `translateX(-${page * 100}%)`;
+    dots.querySelectorAll('button').forEach((d, i) => d.setAttribute('aria-current', String(i === page)));
+    pager.querySelector<HTMLButtonElement>('.prev')!.disabled = page === 0;
+    pager.querySelector<HTMLButtonElement>('.next')!.disabled = page === pages - 1;
+    track.querySelectorAll<HTMLElement>('.grid').forEach((g, i) => g.inert = i !== page);
+  };
+  const layout = () => {
+    const vis = allRows.filter((r) => !r.hidden);
+    track.replaceChildren();
+    for (let i = 0; i < Math.max(vis.length, 1); i += PER) {
+      const ul = template.cloneNode(false) as HTMLElement;
+      vis.slice(i, i + PER).forEach((r) => ul.append(r));
+      track.append(ul);
+    }
+    allRows.filter((r) => r.hidden).forEach((r) => track.lastElementChild!.append(r));
+    pages = track.children.length;
+    dots.replaceChildren(...Array.from({ length: pages }, (_, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `Page ${i + 1}`);
+      b.onclick = () => go(i); return b;
+    }));
+    pager.hidden = pages < 2;
+    go(0);
+  };
+  pager.querySelector('.prev')!.addEventListener('click', () => go(page - 1));
+  pager.querySelector('.next')!.addEventListener('click', () => go(page + 1));
+  document.querySelector('.carousel')!.classList.add('on');
+  layout();
+
   const bar = document.querySelector<HTMLElement>('.filters');
   if (bar) {
     bar.hidden = false;
-    const rows = [...document.querySelectorAll<HTMLElement>('.grid > li')];
+    const rows = allRows;
     const empty = document.querySelector<HTMLElement>('.empty')!;
     bar.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest('button');
@@ -227,6 +275,7 @@ const byArea = AREAS.map((area) => ({
         r.hidden = !hit; if (hit) shown++;
       });
       empty.hidden = shown > 0;
+      layout();
     });
   }
 </script>
@@ -301,6 +350,24 @@ const byArea = AREAS.map((area) => ({
   .card-body p { color: var(--ink-2); font-size: 1.02rem; line-height: 1.55; }
   .yr { color: var(--ink-3); font-size: .9rem; margin-top: .3rem; }
   .empty { color: var(--ink-3); padding: 1.5rem 0; }
+
+  /* Carousel */
+  .carousel.on .viewport { overflow: hidden; margin: -6px; padding: 6px; }
+  .carousel.on .track { display: flex; transition: transform .6s var(--ease); }
+  .carousel.on .track > .grid { flex: 0 0 100%; min-width: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); align-content: start; padding-inline: 6px; }
+  @media (max-width: 1100px) { .carousel.on .track > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .carousel.on .track > .grid { grid-template-columns: 1fr; } }
+  .carousel.on .card-body h3 { font-size: 1.15rem; }
+  .carousel.on .card-body p { font-size: .95rem; }
+  .pager { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.75rem; }
+  .pager[hidden] { display: none; }
+  .pager > button { width: 2.75rem; height: 2.75rem; border-radius: 999px; border: 0; cursor: pointer; font-size: 1.1rem; color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
+  .pager > button:hover:not(:disabled) { background: var(--sky-wash); }
+  .pager > button:disabled { opacity: .35; cursor: default; }
+  .dots { display: flex; gap: .5rem; }
+  .dots :global(button) { width: .7rem; height: .7rem; padding: 0; border: 0; border-radius: 999px; cursor: pointer; background: var(--rule-strong); }
+  .dots :global(button[aria-current='true']) { background: var(--amber); width: 1.8rem; }
+  @media (prefers-reduced-motion: reduce) { .carousel.on .track { transition: none; } }
 
   /* Publications: set on solid sky, the second appearance of the secondary colour */
   .pubs {
