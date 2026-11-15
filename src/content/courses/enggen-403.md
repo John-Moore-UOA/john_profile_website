@@ -9,10 +9,38 @@ highlight: false
 desc: "Systems-level thinking and modelling for complex, \"wicked\" engineering problems."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A course on applying engineering thinking to large-scale, messy problems that involve economics, society and government. It ended with Systems Week, an intensive team project on a real-world problem.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Systems concepts
+
+- Causal loop diagrams
+- Leverage points
+- Wicked problems and root causes
+
+### Economics and policy
+
+- GDP and productivity
+- Cost-benefit analysis
+- New Zealand Living Standards framework
+- Machinery of government
+
+### Applied systems work
+
+- Stakeholder analysis at scale
+- Analysing alternatives and measuring impact
+- Multidimensional recommendations
+- Systems Week team project
+
+## Skills and tools
+
+Systems thinking, causal loop modelling, cost-benefit analysis, policy analysis, stakeholder analysis, report writing, interdisciplinary teamwork
+
+## Assessment
+
+- Individual assignments
+- Systems Week group project
+- Team report

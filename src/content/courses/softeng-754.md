@@ -9,10 +9,35 @@ highlight: true
 desc: "Advanced elicitation and specification of software requirements — directly informed requirements work with medical experts."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+An advanced requirements engineering course with a strong research component, covering user-centred approaches, human factors and the use of AI in requirements work.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### User-centred requirements
+
+- Understanding users and stakeholders
+- Human aspects in requirements development
+- Elicitation techniques
+
+### Analysis and evaluation
+
+- Evaluating requirements with analysis tools
+- Recent research advances
+- Critical reading of papers
+
+### AI in requirements
+
+- Applying AI to requirements tasks
+- Benefits and limitations
+
+## Skills and tools
+
+Requirements engineering, stakeholder elicitation, user-centred design, requirements analysis, research, teamwork, AI-assisted requirements
+
+## Assessment
+
+- Group and individual assignments
+- Quizzes
+- Test

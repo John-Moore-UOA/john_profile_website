@@ -11,8 +11,7 @@ facets: ["Conversational logic", "System architecture"]
 
 On 28 October I wrote the voice-act cache plan, then built it in a handful of commits: a `evc_chatterbox` sidecar (a copy of the Piper-based one), serving catalogue hits from cached audio, importing the catalogue into Unity with a logged hit rate, a phase-scoped act menu, schema-constrained replies with a streaming parser, and an `ActMode` knob on the fast loop. I also shortened speech and added new avatar skins.
 
-![PLACEHOLDER: Diagram: fast LLM picks an act id (e.g. find.where egg) -> realiser -> cached WAV in the Chatterbox sidecar, or live render on a miss; session log records hit rate](/placeholder.svg "Voice-act cache flow")
-
+![Voice-act cache flow: the fast LLM picks an act id, the realiser resolves it to a cached WAV in the Chatterbox sidecar or renders live on a miss, and the session log records the hit rate.](/images/diagrams/masters-voice-cache.svg "Voice-act cache flow")
 ## Why — decisions and trade-offs
 
 - **Acts instead of sentences.** The model chooses from a vocabulary of short typed acts (for example `find.where` with an item slot) rather than writing free text. This fits the rule that code decides and the model only phrases, and it shrinks what can go wrong. <!-- TODO: verify this was also about latency vs just safety -->

@@ -11,8 +11,7 @@ facets: ["Conversational logic", "Avatar behaviour", "Interaction design"]
 
 Wrote the design and plan on 3 November, then implemented in about 12 commits: logic types and a strategy resolver with CLI self-tests, a help gate, a feature card, judging a spoken place answer, the "think it through" strategy, an episode world lock, an episode runner, a code-gate-then-model help detector, and freezing for the missing-item and riddle talks. I also wrote a manual test sheet and an explainer page.
 
-![PLACEHOLDER: Diagram of the episode flow: open line -> ask "where would you usually keep the X?" -> right / wrong / don't know -> fallback or done](/placeholder.svg "Think it through help episode")
-
+![Think it through episode flow: open line, ask where the item is usually kept, then right, wrong or don't know, ending in confirm, a fallback line, or done.](/images/diagrams/masters-help-flow.svg "Think it through help episode")
 ## Why — decisions and trade-offs
 
 - **Detector is a code gate, then a model judge.** Code decides whether the model is even allowed to judge (no progress for 10 s, nobody speaking, 20 s since last help); the model answers yes/no on a short feature card. Evidence like "opened three wrong places" is a line on the card, never a rule by itself.

@@ -9,10 +9,37 @@ highlight: true
 desc: "Statistical and deep learning foundations, applied directly to physiological-data prediction in my VR rehabilitation research."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+An introduction to machine learning: how models are learned from data instead of being hand-coded. It covers the main algorithms, the theory behind them and how to evaluate results critically, using Python throughout.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Learning fundamentals
+
+- What it means to learn from data
+- Computational and statistical learning theory
+- Bias, variance, overfitting and generalisation
+
+### Supervised learning
+
+- Linear and logistic regression
+- Decision trees and ensemble methods
+- Support vector machines
+- Neural networks and deep learning basics
+
+### Unsupervised learning and evaluation
+
+- Clustering and dimensionality reduction
+- Cross-validation and model selection
+- Metrics for classification and regression
+- Critically evaluating modelling results
+
+## Skills and tools
+
+Python, scikit-learn, machine learning, neural networks, deep learning, model evaluation, statistics, linear algebra, data preprocessing
+
+## Assessment
+
+- Group and individual assignments
+- Final exam

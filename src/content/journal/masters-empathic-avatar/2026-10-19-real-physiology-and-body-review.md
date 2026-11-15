@@ -11,8 +11,7 @@ facets: ["Physiological sensing", "Study design and operator tooling", "Avatar d
 
 Commits that week were save points ("save state 19", "pre layout changes"), but most of the thinking was in documents dated 21-22 October: a design for a cognitive-load model service on Lab Streaming Layer, a revision of the research plan (documents 10-16), a read-only review of the player avatar, IK and speech, and a third trial design (vegetable soup and juice).
 
-![PLACEHOLDER: Diagram: synthetic EEG + GSR on LSL and Unity game-state markers -> model service -> prediction stream on LSL -> Unity EVC and dashboard](/placeholder.svg "Planned cognitive-load pipeline")
-
+![Planned cognitive-load pipeline: synthetic EEG and GSR on LSL plus Unity game-state markers feed a model service, which publishes a prediction stream on LSL to the Unity EVC and dashboard.](/images/diagrams/masters-cogload-plan.svg "Planned cognitive-load pipeline")
 ## Why — decisions and trade-offs
 
 - **Reuse an existing lab model** (a Random Forest from an earlier lab study) instead of training my own, to get data flowing end to end before real sensors were available. It reads the raw sensor streams, never Unity's re-published copies.

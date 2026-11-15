@@ -3,12 +3,18 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Cats from '../components/Cats.astro';
-import { site, experience, education, skills, publications } from '../data/site';
+import { site, experience, education, skills, publications, clients } from '../data/site';
 import { CATEGORIES } from '../content.config';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year);
-const masters = projects.find((p) => p.data.featured);
-const rest = projects.filter((p) => !p.data.featured);
+// The Masters panel shows one project in two parts; both are kept out of the index below.
+const parts = site.masters.parts.map((part) => ({ ...part, entry: projects.find((p) => p.id === part.project)! }));
+const rest = projects
+  .filter((p) => !parts.some((part) => part.project === p.id))
+  .sort((a, b) => Number(b.data.spotlight) - Number(a.data.spotlight));
+const FOLD = 8; // compact rows shown before "And many more"
+const leads = rest.filter((p) => p.data.spotlight).length;
+const folded = Math.max(0, rest.length - leads - FOLD);
 const usedCats = CATEGORIES.filter((c) => rest.some((p) => p.data.categories.includes(c)));
 
 const AREAS = ['Computer Science', 'Software Engineering', 'Computer Systems', 'General Engineering'] as const;
@@ -21,12 +27,13 @@ const byArea = AREAS.map((area) => ({
 ---
 <Base>
   <!-- Hero -->
-  <section class="hero field">
+  <section class="hero navy" data-scene="hero">
     <div class="wrap hero-grid">
       <h1>{site.name}</h1>
       <ul class="hero-lines">
         <li><strong>Master of Engineering candidate</strong>, Bioengineering</li>
-        <li><a href={site.lab.url} rel="noopener">{site.lab.name}</a>, <a href={site.abi.url} rel="noopener">{site.abi.name}</a></li>
+        <li class="hero-sup">Supervised by Mark Billinghurst and Kunal Gupta</li>
+        <li class="hero-orgs"><a href={site.lab.url} rel="noopener">{site.lab.name}</a><a href={site.abi.url} rel="noopener">{site.abi.name}</a></li>
         <li>BE(Hons) First Class, Software Engineering, {site.uni}</li>
       </ul>
       <p class="hero-lede">{site.lede}</p>
@@ -50,65 +57,79 @@ const byArea = AREAS.map((area) => ({
         <p>Research systems, study tools and side projects. Each one opens a design log with process notes, figures and outcomes.</p>
       </header>
 
-      {masters && (
-        <article class="masters navy">
-          <div class="masters-intro">
-            <h3 class="masters-label">Masters project</h3>
-            <p>
-              A one-year Master of Engineering in Bioengineering ({site.masters.when}) at the
-              {' '}<a href={site.abi.url} rel="noopener">{site.abi.name}</a>, within the
-              {' '}<a href={site.lab.url} rel="noopener">{site.lab.name}</a>.
-            </p>
+      <article class="masters navy">
+        <div class="masters-intro">
+          <h3 class="masters-label">Masters project</h3>
+          <div class="masters-text">
+            <p class="masters-title">{site.masters.title}</p>
+            <dl class="masters-meta">
+              <div><dt>Where</dt><dd><a href={site.abi.url} rel="noopener">{site.abi.name}</a><br /><a href={site.lab.url} rel="noopener">{site.lab.name}</a></dd></div>
+              <div><dt>Supervisors</dt><dd>Mark Billinghurst<br />Kunal Gupta</dd></div>
+              <div><dt>Dates</dt><dd>{site.masters.when} (expected)<br />{site.masters.length}</dd></div>
+            </dl>
           </div>
-          <a class="feature" href={`/projects/${masters.id}/`}>
-            <div class="media">
-              {masters.data.image
-                ? <img src={masters.data.image} alt={masters.data.cover ?? ''} />
-                : <div class="ph slot-field" aria-hidden="true"><span class="slot-tag">Image to come</span><p>{masters.data.cover}</p></div>}
-            </div>
-            <div class="feature-body">
-              <Cats list={masters.data.categories} />
-              <h4>{masters.data.title}</h4>
-              <p>{masters.data.summary}</p>
-              <span class="read">Read the design log <Icon name="arrow" /></span>
-            </div>
-          </a>
-        </article>
-      )}
+        </div>
+        <div class="parts">
+          {parts.map(({ entry, name, line, blurb, image, alt }) => (
+            <a class="feature" href={`/projects/${entry.id}/`}>
+              <div class="media">
+                <img src={image ?? entry.data.image} alt={alt ?? entry.data.cover ?? ''} />
+              </div>
+              <div class="feature-body">
+                <h4>{name}</h4>
+                <p class="part-line">{line}</p>
+                <p>{blurb}</p>
+                <Cats list={entry.data.categories} />
+                <span class="read">Read the design log <Icon name="arrow" /></span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </article>
 
       <div class="filters" role="group" aria-label="Filter projects by area" hidden>
         <button type="button" aria-pressed="true" data-cat="all">All</button>
         {usedCats.map((c) => <button type="button" aria-pressed="false" data-cat={c} data-c={c}>{c}</button>)}
       </div>
 
-      <div class="carousel">
-      <div class="viewport"><div class="track">
-      <ul class="grid">
-        {rest.map((p) => (
-          <li data-cats={p.data.categories.join('|')}>
-            <a class="card" href={`/projects/${p.id}/`}>
-              <div class="media">
-                {p.data.image
-                  ? <img src={p.data.image} alt={p.data.cover ?? ''} loading="lazy" />
-                  : <div class="ph slot-field" aria-hidden="true"><span class="slot-tag">Image to come</span><p>{p.data.cover}</p></div>}
-              </div>
-              <div class="card-body">
-                <Cats list={p.data.categories} />
-                <h3>{p.data.title}</h3>
-                <p>{p.data.summary}</p>
+      <ul class="index">
+        {rest.map((p, i) => {
+          const lead = p.data.spotlight;
+          return (
+            <li data-cats={p.data.categories.join('|')} data-fold={!lead && i - leads >= FOLD ? '' : undefined} class:list={{ lead }}>
+              <a class="row" href={`/projects/${p.id}/`}>
                 <span class="mono yr">{p.data.year}</span>
-              </div>
-            </a>
-          </li>
-        ))}
+                <div class="row-main">
+                  <h3>{p.data.title}</h3>
+                  {lead && <p class="row-sum">{p.data.summary}</p>}
+                  <Cats list={p.data.categories} />
+                  {lead && (
+                    <dl class="row-meta">
+                      <div><dt>Role</dt><dd>{p.data.role}</dd></div>
+                      <div><dt>Built with</dt><dd>{p.data.stack.slice(0, 4).join(', ')}</dd></div>
+                    </dl>
+                  )}
+                  {lead && <span class="more">Read the design log <Icon name="arrow" /></span>}
+                </div>
+                {!lead && <p class="row-sum">{p.data.summary}</p>}
+                <div class="media">
+                  {p.data.image
+                    ? <img src={p.data.image} alt={p.data.cover ?? ''} loading="lazy" />
+                    : <div class="ph slot-field" aria-hidden="true"><span class="slot-tag">Image to come</span><p>{p.data.cover}</p></div>}
+                </div>
+              </a>
+            </li>
+          );
+        })}
+        <li class="many">
+          <h3>And many more</h3>
+          <p>Smaller experiments, coursework and prototypes that sit alongside the work above.</p>
+          <div class="many-actions">
+            {folded > 0 && <button type="button" class="btn ghost show-all" hidden>Show {folded} more projects</button>}
+            <a href={site.links.github} rel="noopener">Browse my GitHub</a>
+          </div>
+        </li>
       </ul>
-      </div></div>
-      <nav class="pager" aria-label="Project pages" hidden>
-        <button type="button" class="prev" aria-label="Previous projects">&larr;</button>
-        <span class="dots"></span>
-        <button type="button" class="next" aria-label="Next projects">&rarr;</button>
-      </nav>
-      </div>
       <p class="empty" hidden>No projects in this area yet.</p>
     </div>
   </section>
@@ -129,6 +150,28 @@ const byArea = AREAS.map((area) => ({
           </li>
         ))}
       </ol>
+    </div>
+  </section>
+
+  <!-- Working with people outside software -->
+  <section id="clients" class="band">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2>Designing with people outside software</h2>
+        <p>Some of my best work started with someone who knew their field far better than I did. My job was to listen, ask the awkward questions early, and turn what they needed into something they could actually use.</p>
+      </header>
+      <ul class="clients">
+        {clients.map((c) => (
+          <li>
+            <a class="client" href={`/projects/${c.project}/`}>
+              <h3 class="who">{c.who}</h3>
+              <p class="ctitle">{c.title}</p>
+              <ul class="points">{c.points.map((pt) => <li>{pt}</li>)}</ul>
+              <span class="client-link">See the project <Icon name="arrow" /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -204,7 +247,7 @@ const byArea = AREAS.map((area) => ({
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="contact navy">
+  <section id="contact" class="contact navy" data-scene="night">
     <div class="wrap">
       <h2>Let’s work together.</h2>
       <p>I’m open to research collaborations, research positions and engineering roles in AI, XR and human-computer interaction.</p>
@@ -220,64 +263,35 @@ const byArea = AREAS.map((area) => ({
 </Base>
 
 <script>
-  // Carousel: chunk the visible cards into pages of 8 (4 x 2) that slide horizontally.
-  const PER = 8;
-  const track = document.querySelector<HTMLElement>('.track')!;
-  const pager = document.querySelector<HTMLElement>('.pager')!;
-  const dots = pager.querySelector<HTMLElement>('.dots')!;
-  const allRows = [...document.querySelectorAll<HTMLElement>('.grid > li')];
-  // Clone the server-rendered list so new pages keep Astro's scoped-style attribute.
-  const template = track.querySelector<HTMLElement>('.grid')!.cloneNode(false) as HTMLElement;
-  let page = 0, pages = 1;
-  const go = (n: number) => {
-    page = Math.max(0, Math.min(pages - 1, n));
-    track.style.transform = `translateX(-${page * 100}%)`;
-    dots.querySelectorAll('button').forEach((d, i) => d.setAttribute('aria-current', String(i === page)));
-    pager.querySelector<HTMLButtonElement>('.prev')!.disabled = page === 0;
-    pager.querySelector<HTMLButtonElement>('.next')!.disabled = page === pages - 1;
-    track.querySelectorAll<HTMLElement>('.grid').forEach((g, i) => g.inert = i !== page);
-  };
-  const layout = () => {
-    const vis = allRows.filter((r) => !r.hidden);
-    track.replaceChildren();
-    for (let i = 0; i < Math.max(vis.length, 1); i += PER) {
-      const ul = template.cloneNode(false) as HTMLElement;
-      vis.slice(i, i + PER).forEach((r) => ul.append(r));
-      track.append(ul);
-    }
-    allRows.filter((r) => r.hidden).forEach((r) => track.lastElementChild!.append(r));
-    pages = track.children.length;
-    dots.replaceChildren(...Array.from({ length: pages }, (_, i) => {
-      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `Page ${i + 1}`);
-      b.onclick = () => go(i); return b;
-    }));
-    pager.hidden = pages < 2;
-    go(0);
-  };
-  pager.querySelector('.prev')!.addEventListener('click', () => go(page - 1));
-  pager.querySelector('.next')!.addEventListener('click', () => go(page + 1));
-  document.querySelector('.carousel')!.classList.add('on');
-  layout();
-
+  // Index: category filter, plus a fold that keeps the long tail behind "And many more".
+  // Without JS every project is listed and the fold button stays hidden.
+  const rows = [...document.querySelectorAll<HTMLElement>('.index > li[data-cats]')];
   const bar = document.querySelector<HTMLElement>('.filters');
+  const showAll = document.querySelector<HTMLButtonElement>('.show-all');
+  const empty = document.querySelector<HTMLElement>('.empty')!;
+  let cat = 'all', open = false;
+  const apply = () => {
+    let shown = 0;
+    rows.forEach((r) => {
+      const hit = cat === 'all' || r.dataset.cats!.split('|').includes(cat);
+      const tucked = !open && cat === 'all' && r.dataset.fold !== undefined;
+      r.hidden = !hit || tucked; if (hit) shown++;
+    });
+    if (showAll) showAll.hidden = open || cat !== 'all';
+    empty.hidden = shown > 0;
+  };
+  showAll?.addEventListener('click', () => { open = true; apply(); });
   if (bar) {
     bar.hidden = false;
-    const rows = allRows;
-    const empty = document.querySelector<HTMLElement>('.empty')!;
     bar.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest('button');
       if (!btn) return;
-      const cat = btn.dataset.cat!;
+      cat = btn.dataset.cat!;
       bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      let shown = 0;
-      rows.forEach((r) => {
-        const hit = cat === 'all' || r.dataset.cats!.split('|').includes(cat);
-        r.hidden = !hit; if (hit) shown++;
-      });
-      empty.hidden = shown > 0;
-      layout();
+      apply();
     });
   }
+  apply();
 </script>
 
 <style>
@@ -299,24 +313,32 @@ const byArea = AREAS.map((area) => ({
     .hero-facts { grid-template-columns: 1fr; }
   }
 
-  /* Masters: the one navy block in the body of the page */
+  /* Masters: the one navy block in the body of the page. One project, shown as its two halves. */
   .masters { display: grid; gap: clamp(1.5rem, 3vw, 2.25rem); margin-bottom: clamp(3.5rem, 7vw, 5rem); padding: clamp(1.25rem, 3vw, 2.5rem); border-radius: var(--r-l); box-shadow: var(--shadow); }
-  .masters-intro { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); gap: .6rem 3rem; align-items: baseline; }
+  .masters-intro { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 1rem 3rem; align-items: baseline; }
   .masters-label { display: inline-flex; align-items: center; gap: .7rem; font: 600 1.5rem/1.2 var(--sans); }
-  .masters-label::before { content: ''; width: .8rem; height: .8rem; border-radius: 3px; background: var(--amber); flex: none; }
-  .masters-intro p { max-width: 62ch; }
-  .feature { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(1.5rem, 3vw, 2.75rem); text-decoration: none; color: inherit; padding-top: clamp(1.5rem, 3vw, 2.25rem); border-top: 1px solid var(--rule); }
+  .masters-text { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
+  .masters-title { font: 600 clamp(1.75rem, 3.2vw, 2.6rem)/1.1 var(--sans); letter-spacing: -0.035em; color: var(--ink); max-width: 26ch; text-wrap: balance; }
+  .masters-meta { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; gap: 1rem clamp(2rem, 5vw, 4rem); }
+  .masters-meta dt { font-size: .9rem; font-weight: 600; color: var(--ink-3); }
+  .masters-meta dd { margin: .2rem 0 0; color: var(--ink); line-height: 1.5; }
+  .parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.75rem, 3.5vw, 3rem); padding-top: clamp(1.5rem, 3vw, 2.25rem); border-top: 1px solid var(--rule); }
+  .feature { display: grid; grid-template-rows: auto 1fr; gap: 1.35rem; text-decoration: none; color: inherit; }
   .feature:hover { color: inherit; }
-  .feature .media { min-height: 23rem; border-radius: var(--r-m); }
-  .feature-body { display: grid; align-content: center; gap: 1.1rem; padding-block: .5rem; }
-  .feature-body h4 { font: 600 clamp(1.8rem, 3vw, 2.4rem)/1.12 var(--sans); letter-spacing: -0.03em; }
-  .read { justify-self: start; display: inline-flex; gap: .55rem; align-items: center; min-height: 2.85rem; padding: .7rem 1.3rem; border-radius: 999px; background: var(--amber); color: var(--bg); font-weight: 600; line-height: 1; margin-top: .4rem; transition: background .2s; }
+  .feature .media { aspect-ratio: 16 / 10; border-radius: var(--r-m); }
+  .feature .media img { object-position: top; }
+  .feature:hover .media img { transform: scale(1.03); }
+  .feature-body { display: grid; align-content: start; justify-items: start; gap: .7rem; }
+  .feature-body h4 { font: 600 clamp(1.5rem, 2.4vw, 1.9rem)/1.15 var(--sans); letter-spacing: -0.025em; }
+  .feature-body p { max-width: 46ch; }
+  .feature-body .part-line { color: var(--ink); font-weight: 500; font-size: 1.15rem; line-height: 1.4; }
+  .read { display: inline-flex; gap: .5rem; align-items: center; margin-top: .5rem; color: var(--amber); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .25em; transition: color .2s; }
   .read :global(svg) { width: 1.05em; transition: transform .3s var(--ease); }
-  .feature:hover .read { background: var(--amber-hot); }
+  .feature:hover .read { color: var(--amber-hot); text-decoration-thickness: 2px; }
   .feature:hover .read :global(svg) { transform: translateX(4px); }
   @media (max-width: 860px) {
-    .masters-intro, .feature { grid-template-columns: 1fr; }
-    .feature .media { min-height: 14rem; }
+    .masters-intro, .parts { grid-template-columns: 1fr; }
+    .masters-meta { grid-template-columns: 1fr; }
   }
 
   /* Media + placeholders */
@@ -334,56 +356,100 @@ const byArea = AREAS.map((area) => ({
   .filters button:hover { background: var(--sky-wash); box-shadow: inset 0 0 0 1px var(--sky-dim); }
   .filters button[aria-pressed='true'] { color: var(--white); background: var(--bg); box-shadow: none; }
 
-  /* Project grid */
-  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: clamp(1.25rem, 2.5vw, 2rem); }
-  .card {
-    height: 100%; display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: inherit;
-    background: var(--surface); border-radius: var(--r-m); overflow: hidden; box-shadow: inset 0 0 0 1px var(--rule), var(--shadow-s);
-    transition: transform .4s var(--ease), box-shadow .3s;
+  /* Project index: one ruled list. Spotlight rows open up with a large image and a paragraph;
+     the rest keep the same anatomy (year, title, summary, image) at row scale. */
+  .index { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--rule-strong); }
+  .index > li { border-bottom: 1px solid var(--rule); }
+  .row {
+    display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.3fr) 8.5rem; column-gap: clamp(1.25rem, 2.5vw, 2.25rem);
+    align-items: start; padding: 1.2rem .5rem; text-decoration: none; color: inherit; transition: background .2s;
   }
-  .card:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px var(--sky-dim), var(--shadow); color: inherit; }
-  .card:hover .media img { transform: scale(1.03); }
-  .card .media { aspect-ratio: 16 / 10; }
-  .card-body { padding: 1.35rem 1.5rem 1.5rem; display: grid; gap: .7rem; align-content: start; grid-template-rows: auto auto 1fr auto; }
-  .card-body h3 { font: 650 1.35rem/1.25 var(--sans); }
-  .card:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; text-decoration-color: var(--amber); }
-  .card-body p { color: var(--ink-2); font-size: 1.02rem; line-height: 1.55; }
-  .yr { color: var(--ink-3); font-size: .9rem; margin-top: .3rem; }
+  .row:hover { color: inherit; background: var(--sky-wash); }
+  .row h3 { font: 650 1.3rem/1.3 var(--sans); letter-spacing: -0.01em; text-wrap: balance; }
+  .row:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; text-decoration-color: var(--amber); }
+  .row-main { display: grid; gap: .6rem; align-content: start; justify-items: start; }
+  .row-sum { color: var(--ink-2); font-size: 1.02rem; line-height: 1.55; padding-top: .15rem; }
+  .yr { color: var(--ink-3); font-size: .9rem; line-height: 1.3; padding-top: .42rem; }
+  .row .media { aspect-ratio: 16 / 10; border-radius: var(--r-s); }
+  .row .media::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(11 22 38 / .14); pointer-events: none; }
+  .row:hover .media img { transform: scale(1.05); }
+  .row .ph { padding: .5rem; }
+  .row .ph p { display: none; }
+
+  .lead .row { grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.25fr); padding-block: clamp(2rem, 4.5vw, 3.25rem); }
+  .lead .row:hover { background: none; }
+  .lead h3 { font: 600 clamp(1.8rem, 3vw, 2.4rem)/1.12 var(--sans); letter-spacing: -0.03em; }
+  .lead .yr { padding-top: clamp(.75rem, 1.4vw, 1.15rem); }
+  .lead .row-main { gap: 1rem; padding-block: .2rem .5rem; }
+  .lead .row-sum { font-size: 1.125rem; line-height: 1.6; padding-top: 0; max-width: 46ch; }
+  .lead .media { margin-left: clamp(0rem, 2vw, 1.5rem); border-radius: var(--r-m); box-shadow: var(--shadow); transition: box-shadow .4s var(--ease), transform .5s var(--ease); }
+  .lead .row:hover .media { box-shadow: var(--shadow-xl); transform: translateY(-4px); }
+  .lead .row:hover .media img { transform: scale(1.03); }
+  .lead .ph { padding: 1.25rem; }
+  .lead .ph p { display: -webkit-box; }
+  .row-meta { margin: .2rem 0 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: .7rem 2rem; justify-self: stretch; }
+  .row-meta dt { font-size: .9rem; font-weight: 600; color: var(--ink-3); }
+  .row-meta dd { margin: .15rem 0 0; color: var(--ink); font-size: 1rem; line-height: 1.45; }
+  .more { display: inline-flex; align-items: center; gap: .5rem; margin-top: .3rem; font-weight: 600; color: var(--link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .25em; }
+  .more :global(svg) { width: 1.05em; transition: transform .3s var(--ease); }
+  .lead .row:hover .more { color: var(--ink); text-decoration-thickness: 2px; }
+  .lead .row:hover .more :global(svg) { transform: translateX(4px); }
+
+  /* Closing row: same columns as a project row, no link of its own. */
+  .index > .many { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.3fr) 8.5rem; column-gap: clamp(1.25rem, 2.5vw, 2.25rem); row-gap: 1rem; align-items: start; padding: clamp(1.75rem, 3.5vw, 2.5rem) .5rem; border-bottom: 0; }
+  .many h3 { grid-column: 2; font: 600 clamp(1.8rem, 3vw, 2.4rem)/1.12 var(--sans); letter-spacing: -0.03em; }
+  .many p { grid-column: 3 / -1; color: var(--ink-2); font-size: 1.125rem; line-height: 1.6; max-width: 46ch; padding-top: .35rem; }
+  .many-actions { grid-column: 3 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+  .many-actions a { font-weight: 600; }
+  .show-all[hidden] { display: none; }
+
+  @media (max-width: 1040px) {
+    .index > li:not(.lead) .row { grid-template-columns: 4.5rem minmax(0, 1fr) 8.5rem; grid-template-areas: 'yr main media' 'yr sum media'; row-gap: .45rem; }
+    .index > li:not(.lead) .yr { grid-area: yr; }
+    .index > li:not(.lead) .row-main { grid-area: main; }
+    .index > li:not(.lead) .row-sum { grid-area: sum; }
+    .index > li:not(.lead) .media { grid-area: media; }
+    .index > .many { grid-template-columns: 4.5rem minmax(0, 1fr); }
+    .many h3, .many p, .many-actions { grid-column: 2; }
+  }
+  @media (max-width: 940px) {
+    .lead .row { grid-template-columns: 1fr; row-gap: 1rem; padding-inline: 0; }
+    .lead .media { order: -1; margin-left: 0; }
+    .lead .yr { padding-top: .4rem; }
+    .lead .row-main { padding-block: 0; }
+  }
+  @media (max-width: 600px) {
+    .index > li:not(.lead) .row { grid-template-columns: minmax(0, 1fr) 5.5rem; grid-template-areas: 'yr media' 'main media' 'sum sum'; column-gap: 1rem; padding-inline: 0; }
+    .index > li:not(.lead) .yr { padding-top: 0; }
+    .index > .many { grid-template-columns: 1fr; padding-inline: 0; }
+    .many h3, .many p, .many-actions { grid-column: 1; }
+  }
   .empty { color: var(--ink-3); padding: 1.5rem 0; }
 
-  /* Carousel */
-  .carousel.on .viewport { overflow: hidden; margin: -6px; padding: 6px; }
-  .carousel.on .track { display: flex; transition: transform .6s var(--ease); }
-  .carousel.on .track > .grid { flex: 0 0 100%; min-width: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); align-content: start; padding-inline: 6px; }
-  @media (max-width: 1100px) { .carousel.on .track > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 600px) { .carousel.on .track > .grid { grid-template-columns: 1fr; } }
-  .carousel.on .card-body h3 { font-size: 1.15rem; }
-  .carousel.on .card-body p { font-size: .95rem; }
-  .pager { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.75rem; }
-  .pager[hidden] { display: none; }
-  .pager > button { width: 2.75rem; height: 2.75rem; border-radius: 999px; border: 0; cursor: pointer; font-size: 1.1rem; color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
-  .pager > button:hover:not(:disabled) { background: var(--sky-wash); }
-  .pager > button:disabled { opacity: .35; cursor: default; }
-  .dots { display: flex; gap: .5rem; }
-  .dots :global(button) { width: .7rem; height: .7rem; padding: 0; border: 0; border-radius: 999px; cursor: pointer; background: var(--rule-strong); }
-  .dots :global(button[aria-current='true']) { background: var(--amber); width: 1.8rem; }
-  @media (prefers-reduced-motion: reduce) { .carousel.on .track { transition: none; } }
-
   /* Publications: set on solid sky, the second appearance of the secondary colour */
-  .pubs {
-    --ink-2: var(--bg-raised); --ink-3: var(--line); --rule: rgb(11 22 38 / .25);
-    list-style: none; margin: 0; padding: clamp(.5rem, 1.5vw, 1rem) clamp(1.25rem, 3.5vw, 3rem); border-radius: var(--r-l);
-    background: repeating-linear-gradient(90deg, rgb(255 255 255 / .14) 0 1px, transparent 1px 9px, rgb(11 22 38 / .03) 9px 10px, transparent 10px 20px), var(--sky);
-  }
-  .pubs li { display: grid; grid-template-columns: 6rem 1fr; gap: 2rem; padding: clamp(1.5rem, 3vw, 2.25rem) 0; }
-  .pubs li + li { border-top: 1px solid var(--rule); }
-  .pyear { color: var(--ink); font-size: 1.05rem; font-weight: 500; padding-top: .35rem; }
-  .pubs h3 { font: 600 clamp(1.4rem, 2.6vw, 1.9rem)/1.2 var(--sans); letter-spacing: -0.025em; max-width: 30ch; }
+  .pubs { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--rule-strong); }
+  .pubs li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; padding: .95rem .5rem; border-bottom: 1px solid var(--rule); transition: background .2s; }
+  .pubs li:hover { background: var(--sky-wash); }
+    .pubs li:hover .pyear { color: var(--sky-ink); }
+  .pyear { color: var(--sky-ink); font-size: .9rem; }
+  .pubs h3 { font: 500 1.08rem/1.4 var(--sans); letter-spacing: 0; }
   .pubs h3 a { color: var(--ink); text-decoration-color: rgb(11 22 38 / .4); }
   .pubs h3 a:hover { text-decoration-color: var(--bg); }
-  .venue { margin-top: .7rem; color: var(--ink); font-weight: 500; }
-  .authors { margin-top: .3rem; color: var(--ink-2); font-size: 1rem; max-width: 70ch; }
-  .authors strong { font-weight: 700; }
+  .venue { margin-top: .2rem; color: var(--ink-2); font-size: .95rem; }
+  .authors { margin-top: .15rem; color: var(--ink-3); font-size: .92rem; max-width: 80ch; }
+  .authors strong { font-weight: 600; color: var(--ink); }
+  /* Clients */
+  .clients { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: clamp(1.25rem, 2.5vw, 2rem); }
+  .client { height: 100%; display: grid; grid-template-rows: auto auto 1fr auto; gap: .5rem; padding: clamp(1.5rem, 2.5vw, 2rem); background: var(--surface); border-radius: var(--r-l); border-top: 3px solid var(--sky); box-shadow: inset 0 0 0 1px var(--sky-soft), var(--shadow-s); text-decoration: none; color: inherit; transition: box-shadow .3s, transform .4s var(--ease); }
+  .client:hover { color: inherit; box-shadow: inset 0 0 0 1px var(--sky-dim), var(--shadow); }
+  .who { font: 700 1.5rem/1.2 var(--sans); letter-spacing: -0.025em; color: var(--ink); }
+  .ctitle { font-size: 1rem; font-weight: 500; color: var(--sky-ink); }
+  .points { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .55rem; align-content: start; }
+  .points li { display: flex; align-items: baseline; gap: .65rem; font-size: 1.02rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
+  .points li::before { content: ''; flex: none; width: .5rem; height: .5rem; border-radius: 50%; background: var(--sky); box-shadow: 0 0 0 3px var(--sky-wash); transform: translateY(-.1rem); }
+  .client-link { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--sky-soft); display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; color: var(--link); }
+  .client-link :global(svg) { width: 1.1em; transition: transform .3s var(--ease); }
+  .client:hover .client-link :global(svg) { transform: translateX(4px); }
   @media (max-width: 560px) { .pubs li { grid-template-columns: 1fr; gap: .4rem; } }
 
   /* Courses */

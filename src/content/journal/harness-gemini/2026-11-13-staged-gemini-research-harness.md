@@ -2,7 +2,7 @@
 project: "harness-gemini"
 title: "A staged Gemini harness so Claude reads one brief instead of the whole codebase"
 date: 2026-11-13
-session: "Session 1: Build"
+session: "Build"
 summary: "I built a self-contained Gemini agent on cloud credits that explores code and literature in stages and hands Claude Code a single judged brief through two skills."
 facets: ["What I built", "Why"]
 ---
@@ -11,8 +11,7 @@ facets: ["What I built", "Why"]
 
 The folder is not a git repo, so this is reconstructed from file dates (all 13 November) and the plan. `PLAN.md` set the stages: task, codebase summary (cached), literature search, six parallel personas without tools, and a judge that writes `40_brief.md`. The build order was: `gem.ps1` launcher with headless and prompt-file modes, a read-only policy, model aliases (bulk, cheap, synth), sub-agents (`code-reader`, `lit-scout`), orchestrator stages in `brainstorm.py`, then the `gemini-brainstorm` and `gemini-research` skills installed by junctions. Runs produced research notes on one of my other projects.
 
-![PLACEHOLDER: Diagram: Claude Code skill -> brainstorm.py -> codebase stage (cached) -> literature stage -> 6 personas in parallel -> judge -> 40_brief.md](/placeholder.svg "Harness pipeline")
-
+![Harness pipeline: a Claude Code skill calls brainstorm.py, which runs a cached codebase stage, a literature stage, six personas in parallel and a judge, and writes 40_brief.md.](/images/diagrams/harness-pipeline.svg "Harness pipeline")
 ## Why — decisions and trade-offs
 
 - **Offload reading to save Claude usage.** Claude only reads the final brief file, not the intermediate stages.

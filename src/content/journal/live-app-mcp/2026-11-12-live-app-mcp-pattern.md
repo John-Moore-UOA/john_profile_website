@@ -2,7 +2,7 @@
 project: "live-app-mcp"
 title: "Optimistic revisions and a view endpoint make a running app drivable over MCP"
 date: 2026-11-12
-session: "Session 1: Pattern extraction"
+session: "Pattern extraction"
 summary: "I distilled what I built for Voice Studio into a reusable skill: a revision counter with 409 conflicts, view reporting and a stdio MCP server that talks to the app over HTTP."
 facets: ["Architecture", "Protocol: how the generated server attaches", "Tools exposed"]
 ---
@@ -11,8 +11,7 @@ facets: ["Architecture", "Protocol: how the generated server attaches", "Tools e
 
 Neither location is a git repo; `SKILL.md` is dated 12 November, the day of the Voice Studio commit it uses as its reference implementation. The skill defines four server additions (revision counter, `base_rev` concurrency, `/api/view`, action endpoints), UI live sync (poll every 1.5 s, reload and banner when the change is not from the page), and a stdio MCP server using `mcp` 2.x `MCPServer` with batched edit tools, action tools, a variants tool and `notify`. It ends with a verification checklist. The `Claude_Skills` folder holds only an unrelated poster skill.
 
-![PLACEHOLDER: Diagram: Claude Code -(stdio MCP)-> app_mcp.py -(HTTP /api/rev, /api/view, state PUT with base_rev)-> app server <-(poll 1.5 s)- browser UI](/placeholder.svg "Live App MCP data flow")
-
+![Live App MCP architecture: Claude Code talks MCP over stdio to app_mcp.py, which talks HTTP to the app server (state GET/PUT with base_rev, /api/rev, /api/view). The browser UI polls /api/rev every 1.5 seconds and posts /api/view.](/images/diagrams/live-app-mcp.svg "Live App MCP data flow")
 ## Why — decisions and trade-offs
 
 - **Never write the state file behind a running UI;** it would be overwritten at the next save, so all edits go through the API.

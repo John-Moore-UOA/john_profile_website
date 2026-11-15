@@ -1,8 +1,8 @@
 ---
 project: "public-speaking-vr"
 title: "Tasks 1-6: attention model, gaze lock and the aura as the manipulated cue"
-date: 2026-11-11
-session: "Build part 1 (T1-T6)"
+date: 2026-11-11T02:00:00Z
+session: "Attention model"
 summary: "I built the core of the prototype: config assets, attention model, scene builder with desktop mode, audience members with body language, head-gaze selection, the aura conditions and a session state machine."
 facets: ["What I built"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built"]
 
 Each task was one commit. T1 added the core enums, config ScriptableObjects, the attention model, a session log facade and a debug GUI. T2 added a scene builder, a clinical white and grey room, the XR rig and a desktop mode. T3 added the audience member prefab, body-language animation and an audience manager. T4 added head-gaze selection with a lock highlight. T5 added the aura shell, the condition maths and F5 to F7 debug keys. T6 added the game-state controller, instruction display and experimenter keys.
 
-![PLACEHOLDER: Screenshot of the VR room with five seated audience members and coloured attention auras above their heads](/placeholder.svg "Audience with aura cues")
+![Diagram of the VR room: five seated audience members, each with a coloured aura above their head as the attention cue, and the speaker in a headset whose head gaze locks onto one of them.](/images/diagrams/ps-audience-aura.svg "Audience with aura cues (diagram)")
 
 ## Why — decisions and trade-offs
 

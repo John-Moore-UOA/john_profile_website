@@ -1,8 +1,8 @@
 ---
 project: "webcam-conversational-agent"
 title: "Unity as a thin client, with an editor simulation so it runs without a headset"
-date: 2026-11-05
-session: "Day 1: Unity client"
+date: 2026-11-05T02:00:00Z
+session: "Unity client"
 summary: "I built the Unity side (eye gaze and hand aim samplers, WebSocket client with clock sync, bench calibration, TTS playback) and an editor simulation with a scenario runner so the loop can be tested without wearing the headset."
 facets: ["What I built"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built"]
 
 After the server I added the ARAgent scene and XR rig with OpenXR eye gaze and Touch Pro input, gaze and aim samplers and a gate probe; a WebSocket client with protocol DTOs, clock sync and a sample streamer; bench objects, a registry, a bench frame and a calibration mode (pinch three marker centres, adjust boxes, save); TTS playback, a simple avatar and a debug overlay. A further commit added editor simulation (mouse as gaze, right mouse as pointing, typed text input), a simulated bench, a scenario runner and a session report. An optional position-refinement step (markers, SAM box prompts, a robotics model) runs after the scene check.
 
-![PLACEHOLDER: Screenshot of the Unity debug overlay: gaze scatter, belief bars and timings panel over the bench](/placeholder.svg "Debug overlay")
+![Diagram of the Unity debug overlay: a scatter of gaze samples clustered on one object on the bench, a belief panel with a bar per object, and a timings panel.](/images/diagrams/webcam-debug-overlay.svg "Debug overlay (diagram)")
 
 ## Why — decisions and trade-offs
 

@@ -1,0 +1,164 @@
+/* Flashy layer: depth, motion and a WebGL wave field on top of the base system.
+   Same palette and roles. Text always sits on a solid or near-solid ground. */
+
+@property --spin { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+:root {
+  --shadow-s: 0 1px 2px rgb(11 22 38 / .08), 0 10px 22px -12px rgb(11 22 38 / .28);
+  --shadow: 0 2px 4px rgb(11 22 38 / .08), 0 30px 60px -28px rgb(11 22 38 / .5);
+  --shadow-xl: 0 4px 8px rgb(11 22 38 / .1), 0 50px 90px -36px rgb(11 22 38 / .62), 0 24px 60px -30px rgb(74 141 184 / .55);
+  --glow: 0 0 0 1px rgb(126 200 242 / .45), 0 0 48px -6px rgb(126 200 242 / .55);
+}
+
+/* ---------- Scroll progress ---------- */
+.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60; background: linear-gradient(90deg, var(--sky-dim), var(--amber)); transform-origin: 0 50%; transform: scaleX(0); }
+@supports (animation-timeline: scroll()) {
+  .progress { animation: grow linear both; animation-timeline: scroll(root); }
+}
+@keyframes grow { to { transform: scaleX(1); } }
+
+/* ---------- WebGL canvas ---------- */
+.scene { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.6s ease; }
+.scene.on { opacity: 1; }
+[data-scene] { position: relative; isolation: isolate; overflow: clip; }
+
+/* ---------- Nav: a floating bar ---------- */
+:root:root:root:root body .nav { top: .75rem; height: 3.75rem; background: transparent !important; border: 0 !important; animation: none !important; pointer-events: none; }
+:root:root:root:root body .nav .wrap {
+  pointer-events: auto; padding-inline: 1.1rem .6rem; border-radius: 999px; width: min(100% - 2 * var(--gutter) + 1.5rem, var(--max) + 1.5rem);
+  background: rgb(244 250 255 / .86); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .8), 0 1px 2px rgb(11 22 38 / .08), 0 18px 40px -20px rgb(11 22 38 / .5);
+}
+:root:root:root:root body .nav ul { background: transparent; box-shadow: none; }
+:root:root:root:root body.home main { margin-top: calc(-1 * var(--nav-h) - .75rem); }
+
+/* ---------- Hero: night field, matching the contact block ---------- */
+:root:root:root:root body .hero.navy {
+  --hero-pb: clamp(7rem, 17vh, 11rem);
+  min-height: 100svh; align-items: center; padding-block: calc(var(--nav-h) + 4.5rem) var(--hero-pb);
+  background: radial-gradient(90% 120% at 50% 120%, var(--bg-raised), var(--bg) 60%);
+}
+:root:root:root:root body .hero .scene {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 16%);
+}
+:root:root:root:root body .hero h1 {
+  font-size: clamp(4rem, 13.5vw, 9rem); font-weight: 700; line-height: .88; letter-spacing: -0.055em; color: var(--white);
+  text-shadow: 0 6px 30px rgb(11 22 38 / .9);
+}
+/* The night field lifts to light blue where it meets Current projects. */
+:root:root:root:root body .hero.navy::after {
+  content: ''; position: absolute; inset: auto 0 0 0; height: clamp(6rem, 15vh, 10rem); z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, rgb(181 222 247 / 0), rgb(181 222 247 / .3) 45%, var(--sky-soft) 100%);
+}
+:root:root:root:root body #projects { background: linear-gradient(180deg, var(--sky-soft), var(--ground) 16rem); }
+:root:root:root:root body .hero-lines .hero-sup { font-size: 1.05rem; margin-bottom: .55rem; }
+:root:root:root:root body .hero-lines .hero-orgs { display: flex; flex-wrap: wrap; gap: .3rem 2.5rem; margin-bottom: .2rem; }
+/* Legibility: a soft navy well behind the copy, plus a shadow on the text itself. Never a box. */
+:root:root:root:root body .hero .hero-grid { position: relative; }
+:root:root:root:root body .hero .hero-grid::before {
+  content: ''; position: absolute; inset: -6% -8% -4% -8%; z-index: -1; pointer-events: none;
+  background: radial-gradient(60% 70% at 28% 55%, rgb(11 22 38 / .82), rgb(11 22 38 / .5) 45%, transparent 72%);
+  filter: blur(12px);
+}
+:root:root:root:root body .hero-lines, :root:root:root:root body .hero-lede { color: var(--white); text-shadow: 0 1px 2px rgb(11 22 38 / .9), 0 0 18px rgb(11 22 38 / .9); }
+:root:root:root:root body .hero-lines { font-weight: 500; }
+:root:root:root:root body .hero-lines li:not(:first-child) { color: var(--text); }
+:root:root:root:root body .hero .btn.ghost { background: rgb(11 22 38 / .9); color: var(--white); box-shadow: inset 0 0 0 1px var(--sky-dim); }
+:root:root:root:root body .hero .btn.ghost:hover { background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--sky); }
+/* Facts row stays inside the field: the waves run under it, dimmed by a shade that deepens downward. */
+:root:root:root:root body .hero .hero-facts { border-top-color: rgb(126 200 242 / .35); text-shadow: 0 1px 2px rgb(11 22 38 / .95), 0 0 16px rgb(11 22 38 / .95); }
+:root:root:root:root body .hero .hero-facts::before { background: var(--amber); box-shadow: 0 0 18px rgb(255 181 71 / .7); }
+:root:root:root:root body .hero .hero-facts::after {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  top: -3rem; bottom: -3.5rem; left: 50%; width: 100vw; margin-left: -50vw;
+  background: linear-gradient(180deg, transparent 0, rgb(11 22 38 / .72) 3rem, rgb(11 22 38 / .72) calc(100% - 3.5rem), transparent 100%);
+}
+:root:root:root:root body .hero .hero-facts dt { color: var(--sky); }
+:root:root:root:root body .hero .hero-facts dd { color: var(--white); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:root:root:root body .hero h1 { animation: rise 1.1s var(--ease) both; }
+  :root:root:root:root body .hero .hero-lines, :root:root:root:root body .hero .hero-lede, :root:root:root:root body .hero .hero-actions, :root:root:root:root body .hero .hero-facts { animation: rise 1.1s var(--ease) both; }
+  :root:root:root:root body .hero .hero-lines { animation-delay: .12s; }
+  :root:root:root:root body .hero .hero-lede { animation-delay: .2s; }
+  :root:root:root:root body .hero .hero-actions { animation-delay: .28s; }
+  :root:root:root:root body .hero .hero-facts { animation-delay: .36s; }
+}
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 2.2rem, 0); filter: blur(8px); } }
+
+/* ---------- Buttons ---------- */
+:root:root:root:root body .btn { box-shadow: 0 1px 0 rgb(255 255 255 / .55) inset, 0 12px 26px -10px rgb(184 122 36 / .95), 0 0 0 0 rgb(255 181 71 / 0); }
+:root:root:root:root body .btn:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgb(255 255 255 / .55) inset, 0 18px 34px -12px rgb(184 122 36 / 1), 0 0 0 6px rgb(255 181 71 / .22); }
+:root:root:root:root body .btn.ink, :root:root:root:root body .btn.ghost { box-shadow: var(--shadow-s); }
+:root:root:root:root body .btn.ink:hover { box-shadow: var(--shadow), 0 0 0 6px rgb(126 200 242 / .3); }
+
+/* ---------- Section heads ---------- */
+:root:root:root:root body .sec-head h2 { font-size: clamp(2.6rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.045em; }
+:root:root:root:root body .sec-head h2::after { content: ''; display: block; width: 4.5rem; height: 6px; margin-top: 1.1rem; border-radius: 999px; background: linear-gradient(90deg, var(--amber), var(--amber-hot)); box-shadow: 0 8px 18px -6px rgb(255 181 71 / .9); }
+
+/* ---------- Masters panel: lit edge + glow ---------- */
+:root:root:root:root body .masters.navy {
+  position: relative; border: 2px solid transparent;
+  background:
+    radial-gradient(80% 120% at 85% -10%, rgb(74 141 184 / .5), transparent 60%) padding-box,
+    radial-gradient(60% 90% at 0% 110%, rgb(36 64 95 / .9), transparent 65%) padding-box,
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    conic-gradient(from var(--spin), var(--sky), var(--bg-raised) 25%, var(--amber) 50%, var(--bg-raised) 75%, var(--sky)) border-box;
+  box-shadow: var(--shadow-xl);
+}
+@media (prefers-reduced-motion: no-preference) { body .masters.navy { animation: spin 9s linear infinite; } }
+@keyframes spin { to { --spin: 360deg; } }
+:root:root:root:root body .masters .media { box-shadow: 0 30px 60px -30px #000, var(--glow); }
+
+/* ---------- Tilt: real depth on panels ---------- */
+.tilt { position: relative; transform-style: preserve-3d; transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s var(--ease), box-shadow .4s var(--ease) !important; will-change: transform; }
+.tilt::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / .55), transparent 60%); mix-blend-mode: soft-light;
+}
+.tilt:hover::after { opacity: 1; }
+.navy .tilt::after { background: radial-gradient(26rem circle at var(--mx, 50%) var(--my, 50%), rgb(126 200 242 / .22), transparent 60%); mix-blend-mode: screen; }
+
+/* ---------- Publications + bands ---------- */
+:root:root:root:root body .band { background: linear-gradient(180deg, var(--ground), var(--sky-wash) 12%, var(--sky-wash) 88%, var(--ground)); }
+
+/* ---------- Contact: night field ---------- */
+:root:root:root:root body .contact.navy { background: radial-gradient(90% 120% at 50% 120%, var(--bg-raised), var(--bg) 60%); padding-block: clamp(6rem, 14vw, 11rem) clamp(4rem, 9vw, 6.5rem); }
+:root:root:root:root body .contact .scene { -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / .35) 38%, #000 70%); mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / .35) 38%, #000 70%); }
+:root:root:root:root body .contact h2 { font-size: clamp(3.2rem, 9.5vw, 7rem); font-weight: 700; letter-spacing: -0.05em; text-shadow: 0 0 60px rgb(126 200 242 / .35); }
+
+/* ---------- Detail pages ---------- */
+:root:root:root:root body .page-head.field { padding-top: calc(var(--nav-h) + 2.5rem); background: linear-gradient(180deg, var(--sky-dim) 0%, var(--sky-deep) 25%, var(--sky) 55%, var(--sky-soft) 82%, var(--ground) 100%); }
+body:not(.home) main { margin-top: calc(-1 * var(--nav-h) - .75rem); }
+:root:root:root:root body .page-head h1 { font-weight: 700; letter-spacing: -0.045em; text-shadow: 0 24px 50px rgb(11 22 38 / .22); }
+:root:root:root:root body .spec dl { box-shadow: inset 0 0 0 1px var(--rule), var(--shadow); }
+:root:root:root:root body .next.navy { box-shadow: var(--shadow-xl); }
+:root:root:root:root body .entry { box-shadow: inset 0 0 0 1px var(--rule), var(--shadow-s); }
+:root:root:root:root body .fig-slot .slot, :root:root:root:root body .fig img { box-shadow: var(--shadow); }
+
+/* ---------- Scroll reveal (class added by JS only) ---------- */
+.rv { opacity: 0; transform: translate3d(0, 2.5rem, 0) scale(.98); filter: blur(6px); }
+.rv.in { opacity: 1; transform: none; filter: none; transition: opacity .9s var(--ease) var(--d, 0ms), transform .9s var(--ease) var(--d, 0ms), filter .9s var(--ease) var(--d, 0ms); }
+.rv.in.tilt { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+
+@media (max-width: 700px) {
+  :root:root:root:root body .hero .hero-grid::before { inset: -4% -10%; background: rgb(11 22 38 / .7); filter: blur(30px); }
+}
+@media print { .scene, .progress { display: none !important; } }
+
+/* ---------- Sliding nav pill ---------- */
+:root:root:root:root .nav ul.has-pill { position: relative; isolation: isolate; }
+.nav-pill {
+  position: absolute; top: .3rem; bottom: .3rem; left: 0; width: 0; z-index: -1; border-radius: 999px;
+  background: var(--bg); box-shadow: 0 6px 14px -6px rgb(11 22 38 / .6), inset 0 1px 0 rgb(255 255 255 / .12);
+  opacity: 0; transition: opacity .3s; will-change: transform, width;
+}
+.nav-pill.on { opacity: 1; }
+/* Lean and press ride on `translate`/`scale` so they compose with the transform the slide animates. */
+.nav-pill { translate: 0 0; scale: 1 1; transform-origin: var(--origin, center); transition: opacity .3s, translate .35s cubic-bezier(.34,1.56,.64,1), scale .35s cubic-bezier(.34,1.56,.64,1); }
+.nav-pill.lean { translate: var(--lean) 0; scale: 1.06 1; }
+.nav-pill.press { scale: .94 .9; transition-duration: .12s; }
+:root:root:root:root .nav ul.has-pill a { background: transparent !important; transition: color .25s, scale .15s; }
+:root:root:root:root .nav ul.has-pill a:hover { color: var(--sky-ink); }
+:root:root:root:root .nav ul.has-pill a[aria-current='true'] { color: var(--white); }
+.nav ul a.press { scale: .95; }

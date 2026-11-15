@@ -8,8 +8,10 @@ categories: ["XR", "Physiological Computing", "HCI"]
 stack: ["Unity", "C#", "LSL", "Netcode for GameObjects", "Python", "Three.js"]
 featured: false
 order: 4
+spotlight: true
 related: []
-cover: "Screenshot of the Mood Forest scene in Unity, showing the forest environment reacting to partner EEG state."
+cover: "The scalp topography view: a 3D head with electrode positions and a band-power heatmap."
+image: "/images/eeg-viz.png"
 ---
 
 ## Overview
@@ -27,8 +29,7 @@ I wanted to see how physiological signals can be made visible between two people
 - Avatars and environment driven by the partner's state (Mood Forest: wind, terrain, grass, sky, weather).
 - A second world, "Stain World", with its own explainer page. <!-- TODO: verify what Stain World is for -->
 
-![PLACEHOLDER: Diagram: EEG headset -> LSL -> Unity (band power) -> Netcode/Relay -> partner Unity -> avatar and environment changes](/placeholder.svg "System overview: two PCs, each with a local LSL pipeline, exchanging processed state")
-
+![EEG multiplayer overview: EEG headset to LSL to Unity (band power), then Netcode and Relay carrying processed state to the partner Unity, which changes the avatar and environment.](/images/diagrams/eeg-overview.svg "System overview: two PCs, each with a local LSL pipeline, exchanging processed state")
 ## Process
 
 ### 2026-10 — Web prototype

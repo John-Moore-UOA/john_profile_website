@@ -57,7 +57,7 @@ const toc = [
 
       <div class="body">
         {d.image ? (
-          <figure class="fig cover"><img src={d.image} alt={d.cover ?? d.title} /></figure>
+          <figure class="fig cover"><img src={d.image} alt={d.cover ?? d.title} />{d.imageCredit && <figcaption>{d.imageCredit}</figcaption>}</figure>
         ) : d.cover && (
           <figure class="fig fig-slot cover">
             <div class="slot" role="img" aria-label={`Cover image to come: ${d.cover}`}>
@@ -82,12 +82,12 @@ const toc = [
         {journal.length > 0 && (
           <section class="block" id="journal" aria-labelledby="journal-h">
             <h2 id="journal-h">Design journal</h2>
-            <p class="lead">Week by week: what I built, the decisions behind it, and what I learned.</p>
+            <p class="lead">{p.id === 'masters-empathic-avatar' ? 'Week by week: what' : 'Entry by entry: what'} I built, the decisions behind it, and what I learned.</p>
             <ol class="timeline">
-              {journal.map((e) => (
+              {journal.map((e, i) => (
                 <li>
                   <a class="entry" href={`/projects/${p.id}/log/${entrySlug(e)}/`}>
-                    <span class="entry-meta"><strong>{e.data.session}</strong><time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time></span>
+                    <span class="entry-meta"><strong>{p.id === 'masters-empathic-avatar' ? e.data.session : `Entry ${i + 1}: ${e.data.session}`}</strong>{p.id === 'masters-empathic-avatar' && <time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time>}</span>
                     <h3>{e.data.title}</h3>
                     <p>{e.data.summary}</p>
                     {e.data.facets.length > 0 && <ul class="facets">{e.data.facets.map((f) => <li>{f}</li>)}</ul>}

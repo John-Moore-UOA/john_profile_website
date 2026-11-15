@@ -9,12 +9,39 @@ highlight: false
 desc: "A team-based capstone engineering project delivered to an external stakeholder brief."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
-
-## What I built or wrote
+The capstone design project, where software, electrical and computer engineering students work together to build a real-world device-based solution. As a software engineer I built the human-facing application.
 
 See the project page: [Capstone: Networked Device Platform](/projects/capstone-device-platform/).
 
-## How it connects to my work
+## Topics covered
+
+### Project delivery
+
+- Preliminary investigation
+- Prototype building
+- Team coordination and complementary roles
+
+### Software for intelligent devices
+
+- Sending and receiving device data
+- Displaying information meaningfully
+- Data analytics
+
+### Professional context
+
+- Cultural, economic and environmental impact
+- Health and safety
+- Business case and final demonstration
+
+## Skills and tools
+
+Interdisciplinary teamwork, application development, IoT data handling, data analytics, prototyping, business case writing, demonstration, project management
+
+## Assessment
+
+- Team project
+- Individual coursework
+- Final demonstration
+- Peer evaluations

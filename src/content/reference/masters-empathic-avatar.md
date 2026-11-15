@@ -14,7 +14,7 @@ Around the character sits the machinery of a controlled study: four cooking tria
 
 This page is organised by facet of the system rather than by date. It records what I designed and built. The research questions and results are not written up here yet.
 
-![PLACEHOLDER: Hero shot from the participant's headset view: the character (face and upper body) in the kitchen with the recipe whiteboard visible behind it, mid-conversation with a subtitle line showing at the bottom of the view](/placeholder.svg "The participant's view of the character in the apartment kitchen")
+![The apartment kitchen the participant works in, seen in the Unity scene.](/images/masters/kitchen.png "The kitchen the participant and the character share")
 
 ## Why
 
@@ -31,8 +31,7 @@ The whole thing runs on a study PC with a Quest headset. Unity is the hub. It ta
 - **Sensing**: an EEG headset and a Shimmer GSR/PPG unit published on LSL, with a planned cognitive-load model service that reads the raw streams and publishes a prediction stream back.
 - **Operator side**: a separate V-CORE dashboard (see [the real-time study dashboard](/projects/realtime-study-dashboard)) that receives the trial context and a live view of the participant's headset, and can send assist and AI-switch commands back.
 
-![PLACEHOLDER: Diagram: the whole system on one study PC plus a Quest 3. Left: Quest 3 headset and controllers -> Unity 6 client (centre box, labelled EVC character, Room/trial machinery, Physiological). Unity connects via local WebSocket to the Speech sidecar (Python: mic, VAD, Whisper STT, TTS) and via HTTP to Ollama (fast LLM) and to vLLM in Docker or Gemini on Vertex AI (slow LLM, switchable). Bottom: EEG headset and Shimmer GSR -> LSL streams -> Unity inlets AND -> Cognitive-load model service (Python) -> LSL prediction stream -> Unity. Right: Unity -> WebSocket (trial context, step ratings, LiveKit video of the headset view) -> V-CORE operator dashboard; dashboard -> Unity (assist buttons, AI on/off). Webcam -> facial mocap sender (Python, MediaPipe) -> UDP 11111 -> Unity](/placeholder.svg "System architecture: Unity at the centre, local services around it")
-
+![The whole system on one study PC plus a Quest 3: Unity at the centre, with a speech sidecar, Ollama, a switchable slow LLM, an operator dashboard, LSL physiology streams with a cognitive-load model service, and facial mocap over UDP.](/images/diagrams/masters-system.svg "System architecture: Unity at the centre, local services around it")
 ### Design rules that shape everything else
 
 These rules come from my research-plan notes and are enforced in code, not just in prompts:
@@ -61,11 +60,11 @@ There are three people-shaped things in the scene, all built on Character Creato
 
 <!-- TODO: verify the avatar art direction: who designed the faces and skins in CC (me, or a stock CC model), the character's name/persona as shown to participants, and the age/gender presentation chosen and why. -->
 
-![PLACEHOLDER: Side-by-side render of the three characters (EVC, Facilitator, participant avatar) on a neutral background, full body, so the visual differences in clothing, skin and hair are clear](/placeholder.svg "The three characters: EVC, facilitator and participant avatar")
+![Diagram of the three characters side by side: the AI-driven Empathic Virtual Character, the Facilitator Virtual Character whose face is performed through webcam mocap, and the participant's own avatar with a swappable head.](/images/diagrams/masters-three-characters.svg "The three characters: EVC, facilitator and participant avatar (diagram)")
 
-![PLACEHOLDER: Screenshot of the Character Creator project window (or the CC export dialog) showing the EVC character before export to Unity](/placeholder.svg "The EVC authored in Character Creator")
+![The EVC character close up in the Unity scene.](/images/masters/evc-avatar.png "The EVC character as it appears in Unity")
 
-![PLACEHOLDER: Unity Scene/Inspector screenshot of the EVC prefab: hierarchy showing the CC skeleton and meshes, and the component list (AvatarDirector, AvatarClipPlayer, EvcBrain, EvcGaze, EvcGesture, EvcLipSync)](/placeholder.svg "The EVC prefab and its component stack in Unity")
+![Diagram of the EVC prefab: the hierarchy holds the Character Creator skeleton and meshes, and the component stack is AvatarDirector, AvatarClipPlayer, EvcBrain, EvcGaze, EvcGesture and EvcLipSync.](/images/diagrams/masters-evc-prefab.svg "The EVC prefab and its component stack in Unity (diagram)")
 
 ### Participant body (player avatar)
 
@@ -83,9 +82,9 @@ Two planning documents drove this (a review of the old avatar and a "changes I w
 
 <!-- TODO: verify how well the body solver works in the headset (feet, crouching, mirror), and whether it is used in all study conditions. -->
 
-![PLACEHOLDER: Screenshot of the participant's avatar seen in the kitchen mirror, standing with arms raised and holding a controller-driven pose, showing legs and feet planted on the floor](/placeholder.svg "The participant's body as seen in the mirror")
+![The participant's avatar in Unity with its facial-tracking rig (blue bones) overlaid.](/images/masters/player-avatar.png "The participant avatar and its facial rig")
 
-![PLACEHOLDER: Screen recording still or GIF of the participant squatting to open a low cupboard, with the avatar's knees bending and torso hinging, from a third-person debug camera](/placeholder.svg "Body IK while crouching to reach a low cupboard")
+![Diagram: headset and controller poses feed the body solver, which poses the participant avatar; shown standing, and crouching to a low cupboard with the knees bent and the torso hinged forward.](/images/diagrams/masters-body-ik-crouch.svg "Body IK while crouching to reach a low cupboard (diagram)")
 
 ## Avatar behaviour
 
@@ -113,9 +112,9 @@ The EVC's behaviour is split into modules that each do one job. This section cov
 
 <!-- TODO: verify whether the EVC face has any autonomous expression of its own beyond lip sync and the mocap path (e.g. smile/brow behaviours tied to speech acts), and whether EvcAnimation plays any emotional clips. -->
 
-![PLACEHOLDER: Split screenshot: left, the facilitator at a desk with the MediaPipe preview window showing face landmarks; right, the Facilitator Virtual Character in Unity mirroring the same expression](/placeholder.svg "Webcam facial mocap driving the facilitator character")
+![Diagram: the facilitator's webcam feeds MediaPipe face landmarks; AvatarDirector blends them onto the Facilitator Virtual Character's face in Human mode, or plays animation only in AI mode, fading the face weight between the two.](/images/diagrams/masters-face-mocap.svg "Webcam facial mocap driving the facilitator character (diagram)")
 
-![PLACEHOLDER: Close-up of the EVC's face mid-sentence in Unity Game view showing an open mouth viseme, with the EvcLipSync inspector (Shut Level, Open Level, Gain, Jaw Open Angle) visible beside it](/placeholder.svg "Lip sync tuning on the EVC")
+![Diagram of lip sync tuning: the speech audio level is compared against a Shut Level and an Open Level; EvcLipSync, with its Gain and Jaw Open Angle settings, closes the mouth below the shut level and opens the jaw above the open level.](/images/diagrams/masters-lipsync.svg "Lip sync tuning on the EVC (diagram)")
 
 ### Gaze
 
@@ -140,14 +139,13 @@ The EVC's behaviour is split into modules that each do one job. This section cov
 
 Gestures stop while the participant has the floor, and when the AI is switched off. `EvcListening` adds listening behaviour (attention cues and nods while the participant talks), and `AvatarClipPlayer` plays the body idle and "take it seriously" clips through Playables with no animator controller to wire up.
 
-![PLACEHOLDER: Four-panel strip of EVC gestures from the participant's viewpoint: offer (palms up), point at a lit item, thumbs up, and wave](/placeholder.svg "Code-driven gestures on the EVC")
+![Diagram of four code-driven gestures on the character: offer with palms up, point at a lit item, thumbs up, and a wave when the conversation starts.](/images/diagrams/masters-gestures.svg "Code-driven gestures on the EVC (diagram)")
 
 ## Conversational logic
 
 This is the "brain" (`EvcBrain` and its modules). It was built in a way that the language model has very little room to be wrong.
 
-![PLACEHOLDER: Diagram of the EVC brain. Inputs on the left: participant speech (Whisper transcript), task events from GameStateController, gaze and pointing, cognitive-load value from LSL. Middle: EvcBlackboard fed by EvcTaskSensor and modules (EmpathyModule, GoalDirectionModule, TheoryOfMindModule, GazeIntentModule); evidence from modules -> noisy-OR fusion -> needHelp 0..1. FAST LOOP box (Ollama small model, streamed, only voice): scripted flow, word-for-word coaches, model replies, EvcAssistRunner -> EvcVoice -> TTS sidecar -> AudioSource. SLOW LOOP box (2B local vLLM or Gemini, every ~6-12 s, never speaks): produces JSON beliefs plus a proposed help strategy -> Board.plan, which the assist runner may adopt after validating it. Arrow from slow loop to blackboard only; no arrow from slow loop to voice](/placeholder.svg "The EVC brain: a fast loop that speaks and a slow loop that only proposes")
-
+![The EVC brain: speech, task events, gaze and cognitive load feed a blackboard; modules produce evidence that is fused with noisy-OR into a needHelp value, which drives a fast loop and a slow loop.](/images/diagrams/masters-brain.svg "The EVC brain: a fast loop that speaks and a slow loop that only proposes")
 ### Fast loop, slow loop, and who speaks
 
 - **Fast loop** (a small Qwen model on Ollama, streamed) is the only voice. It handles scripted flow, the word-for-word coaches, free replies to the participant, and running help strategies.
@@ -189,9 +187,8 @@ A **help episode** is a short, rigid side conversation the character starts when
 
 All strategy lines are templates. The pure-C# logic (`Assets/EVC/Runtime/Help/Logic`) can be compiled and tested outside Unity with `Tools/evc_help_tests`.
 
-![PLACEHOLDER: Diagram: state machine of a Think-it-through help episode. Gate (AI on, no progress 10 s, quiet 3 s, 20 s since last help, focus line has strategy) -> fast-model yes/no judge on a feature card -> OPEN ("Let's think it through") -> ASK ("Where would you usually keep the item?") -> participant answer judged in code: right -> confirm and end; wrong with tries left -> ask again; wrong with none left or don't know -> FALLBACK (reveal home and light doors); say again -> repeat ask (max 2); silence 15 s -> prompt once, then fallback. World frozen and push-to-talk rules shown on the side](/placeholder.svg "The Think-it-through help episode as a state machine")
-
-![PLACEHOLDER: Screenshot of the F1 debug overlay mid-session showing needHelp with the contribution of each source, the current strategy, gate checks for the help detector, and the last fast-model prompt with latency breakdown](/placeholder.svg "The EVC debug overlay showing why the character is about to help")
+![State machine of a Think-it-through help episode: a gate, a yes/no judge, an open line, a question, the answer judged in code, then right (confirm and end), wrong (retry), or out of tries (fallback and end).](/images/diagrams/masters-help-episode.svg "The Think-it-through help episode as a state machine")
+![Diagram of the F1 debug overlay: the needHelp score with a bar for each source's contribution, the current strategy, the help detector's gate checks, the last prompt sent to the fast model and a latency breakdown.](/images/diagrams/masters-debug-overlay.svg "The EVC debug overlay showing why the character is about to help (diagram)")
 
 ### Understanding the participant's gaze, pointing and intent
 
@@ -209,7 +206,7 @@ The design cites literature for every constant; the spec notes that every number
 
 <!-- TODO: verify how much of the gaze pipeline has been tuned in the headset. The spec (2026-10-27) says "typechecked, not yet run in Unity or the headset"; later commits ("gaze", "speach and gaze testing 1") suggest it has been tested since. -->
 
-![PLACEHOLDER: Debug visualisation screenshot from the kitchen showing the gaze cone, the two controller rays (one passing the gates, one rejected as 'resting'), and a highlighted target with its score](/placeholder.svg "Gaze and pointing resolution in the debug overlay")
+![Diagram seen from above: the participant's gaze cone covers several items; one controller ray passes the gates and lands on the highlighted target, which shows its score, while the other controller's ray is rejected as resting.](/images/diagrams/masters-gaze-pointing.svg "Gaze and pointing resolution in the debug overlay (diagram)")
 
 ## Environment design
 
@@ -227,11 +224,11 @@ The design cites literature for every constant; the spec notes that every number
 
 <!-- TODO: verify what each pack is used for, whether the AI_assets OBJ food models are AI-generated (and with which tool), and which of these ship in the final study scene. -->
 
-![PLACEHOLDER: Wide establishing screenshot of the brick_appartment kitchen from the participant's start position with all lights on, showing the counters, hob, fridge, the recipe whiteboard and the EVC](/placeholder.svg "The apartment kitchen from the participant's start position")
+![The apartment kitchen in the Unity scene: fridge, hob, sink and a row of small appliances on the counter.](/images/masters/kitchen.png "The kitchen the study takes place in")
 
-![PLACEHOLDER: Scene view screenshot of the whole apartment from above with the gather zone, serving zone, character position and participant start position annotated](/placeholder.svg "Layout of the study scene")
+![Schematic plan of the study scene from above, not to scale: the kitchen counter and appliances, the gather zone, the serving zone, the character's position and the participant's start position.](/images/diagrams/masters-scene-layout.svg "Layout of the study scene (diagram)")
 
-![PLACEHOLDER: Screenshot of the Training scene: white room, bench with a pot, bottle, lemon, knife and cup, and the numbered to-do board on the wall](/placeholder.svg "The white Training scene")
+![Diagram of the white training room: a numbered to-do board on the wall and a bench holding a pot on the hob, a bottle, a lemon, a knife and a cup.](/images/diagrams/masters-training-scene.svg "The white Training scene (diagram)")
 
 ### Trials
 
@@ -257,9 +254,11 @@ The trial runs on a data-driven goal system rather than hard-coded scripts:
 - Food behaviours are separate components: `Cuttable` with a mesh-morphing cut, `Crackable`, `Peelable`, `Washable`, `Blendable`, `Pourable` with droplets, `Doneness`, `Spreadable` with `KnifeSpreader`, `Bowl`, `Plate`, `JuiceCup`, `Soup`. Appliances include `CookSnappable` vessels on a `StoveSnap`, toaster, oven, blender, coffee machine and a tap (`WaterController`).
 - `TrialInteractionLock` can freeze grabs, doors and drawers for talks and help episodes.
 
-![PLACEHOLDER: Screenshot of the EVC Task Board whiteboard in the kitchen during Prepare, showing grouped steps (Egg, Toast) with some lines ticked and one highlighted as the current step](/placeholder.svg "The task whiteboard with grouped steps")
+![Diagram of the task whiteboard during Prepare: steps grouped under Egg and Toast, with completed lines ticked and one line highlighted as the current step.](/images/diagrams/masters-task-board.svg "The task whiteboard with grouped steps (diagram)")
 
-![PLACEHOLDER: Close-up in-headset screenshot of food interaction: the participant's hand holding a knife cutting a lemon on the chopping board, with the cut halves separating](/placeholder.svg "Cutting food with a knife")
+![In-headset view of food interaction: a pan on the hob flagged isOiled, a toaster ring, vegetables and a task list.](/images/masters/food-interaction.png "Food items carry state, shown here as isOiled on the pan")
+
+![Ingredient containers, a knife and numbered slots on the counter.](/images/masters/food-interaction-2.png "Items on the counter during the gather step")
 
 ## Interaction design
 
@@ -283,7 +282,7 @@ A short, fixed task run before the conditions teaches the interactions the kitch
 - It has **no AI character**, no machine learning and no adaptation, but its physiological data is recorded the same way as a condition session so it can be compared with the main scene. It begins with the same 30 second black baseline.
 - The pure step and rewind logic is in `TrainingFlow` and covered by unit tests.
 
-![PLACEHOLDER: In-headset screenshot of the Training scene at step 3, the water bottle glowing, with the to-do board showing steps 1 and 2 ticked, and a red 'Not yet' label next to the knife the participant tried to grab](/placeholder.svg "Training scene with the grab gate refusing an item")
+![Diagram of the training scene at step 3: steps 1 and 2 are ticked on the to-do board, the water bottle glows as the current item, and the knife shows a 'Not yet' label because the grab gate refused it.](/images/diagrams/masters-training-not-yet.svg "Training scene with the grab gate refusing an item (diagram)")
 
 ### The study conditions
 
@@ -299,7 +298,7 @@ The AI main switch (F3, an inspector toggle, or a command from the dashboard) si
 
 <!-- TODO: verify the final set of conditions, the counterbalancing (the older code has a Latin-square ExperimentManager/Condition scaffold), and how many trials each participant does per condition. -->
 
-![PLACEHOLDER: Three-panel comparison, same moment in each study body mode: (1) Separate embodied, both characters standing in the kitchen; (2) Detached voice, only the EVC; (3) Combined, only the EVC with the facilitator's expression mirrored on its face](/placeholder.svg "The three study body modes")
+![Diagram of the three study body modes: separate embodied, with both characters standing in the kitchen; detached voice, where the EVC is heard only; and combined, one EVC body with the facilitator's expression on its face.](/images/diagrams/masters-body-modes.svg "The three study body modes (diagram)")
 
 ### Session structure
 
@@ -311,8 +310,7 @@ A session, as designed, runs as follows:
 4. **Gather**, **Prepare and Cook**, **Serve**, with help episodes, strategies, timed cooking and distractors as they fire.
 5. After the goal is met, participant utterances are logged for 120 seconds as debrief material.
 
-![PLACEHOLDER: Diagram: timeline of one session. Facilitator setup (participant ID, trial number, body mode, Normalize height) -> 30 s black baseline (LSL baseline markers) -> Start EVC conversation -> Recipe check talk (spot bad item, ask about favourite item) -> Maths/quantity stage -> Gather (missing item, riddle, help episodes, scanning) -> Prepare and Cook (planning strategy P1, timed cooking cues, distractors) -> Serve (planning P2) -> Goal met -> 120 s debrief logging. Below the timeline, a band showing continuous logging: EEG, GSR, cognitive-load prediction every 10 s, study events, EVC decision log](/placeholder.svg "The structure of one study session")
-
+![Timeline of one session: facilitator setup, a 30 second black baseline, start EVC conversation, recipe check talk, maths and quantity stage, gather, prepare and cook, then wrap-up.](/images/diagrams/masters-timeline.svg "The structure of one study session")
 ## Study design and operator tooling
 
 ### Study content
@@ -334,9 +332,9 @@ A session, as designed, runs as follows:
 
 The dashboard side (schema-driven signal display, rule engine, session recording, video mirror) is described on its own page: [Real-time study dashboard](/projects/realtime-study-dashboard).
 
-![PLACEHOLDER: Screenshot of the GameStateController inspector in play mode showing trial number, participant ID, study body mode, male toggle, and the Normalize height and Start EVC conversation buttons, with the on-screen control strip visible in the Game view](/placeholder.svg "Facilitator controls in Unity")
+![Diagram of the facilitator controls in Unity: the GameStateController inspector in play mode with trial number, participant ID, study body mode, a male toggle and Normalize height and Start EVC conversation buttons, beside the Game view with its on-screen control strip.](/images/diagrams/masters-facilitator-controls.svg "Facilitator controls in Unity (diagram)")
 
-![PLACEHOLDER: Screenshot of the V-CORE operator dashboard during a session showing the live mirrored headset view, trial progress by phase, and the AI switch button](/placeholder.svg "Operator dashboard view of a running session")
+![Diagram of the operator dashboard during a session: the live mirrored headset view, trial progress through the Gather, Prepare, Cook and Serve phases, and the AI switch button.](/images/diagrams/masters-operator-dashboard.svg "Operator dashboard view of a running session (diagram)")
 
 ## Physiological sensing
 
@@ -348,6 +346,10 @@ The dashboard side (schema-driven signal display, rule engine, session recording
 | Skin conductance (EDA) and PPG | Shimmer unit over LSL | `LSL_Shimmer_Inlet`; 256 Hz expected |
 | Cognitive-load prediction | model service over LSL | `lsl_emotions_inlet` / `emotions`, 5 float channels, read by position |
 | Task and baseline markers | Unity | `GameStateLog` events, written to CSV; an LSL marker stream is specified |
+
+![A Shimmer sensor on the wrist with finger electrodes for skin conductance and pulse.](/images/masters/shimmer.png "The Shimmer unit measures skin conductance and pulse from the hand")
+
+![An EEG cap on a head, seen from the side.](/images/masters/eeg-cap.png "The EEG cap")
 
 - **Streaming the Shimmer.** I use the lab's Shimmer C# API application (`ECL-Shimmer-C-API`, which I have cloned), a GUI that connects to a Shimmer3 over Bluetooth and streams the data on LSL. **Lab Streaming Layer** (also cloned locally) and the LSL4Unity package supply the transport and the Unity inlet base classes. I did not write these; my part is the Unity side and the rest of the pipeline.
 - **Inlets and re-publishing.** The Unity inlets accept several channel layouts (8-channel, 4-channel and 3-channel Shimmer, 8-, 16- and 17-channel EEG), log what they read, and re-publish through `LSL_EEG_Outlet` and `LSL_Shimmer_Outlet` with a baseline tag so any recorder gets an honest rest flag.
@@ -373,9 +375,8 @@ Unity markers -----+--> model service (Python) --> prediction stream (LSL) --> U
 
 <!-- TODO: John to confirm the actual state of the model service (it may live in another folder or machine) and whether any real-participant EEG/GSR has been streamed through it. -->
 
-![PLACEHOLDER: Diagram: physiological data flow. EEG headset (8 ch, 250 Hz) -> LSL stream lsl_eeg_inlet; Shimmer unit (EDA + PPG, 256 Hz) -> Shimmer streaming app -> LSL stream lsl_shimmer_inlet. Both feed (a) Unity inlets LSL_EEG_Inlet and LSL_Shimmer_Inlet -> DataLogger CSVs, and (b) the Cognitive-load model service (Python: calibrate on 30 s baseline, 20 s windows every 10 s, Random Forest). Unity GameStateMarkerOutlet (evc_markers: baseline_black_start/end) -> model service. Model service -> LSL stream lsl_emotions_inlet (cl_class, cl_p_low, cl_p_high, cl_status, emotion) -> Unity LSLGetEmotion -> LslCognitiveStressSource -> EmpathyModule and CognitiveState -> EVC behaviour; same stream -> V-CORE dashboard and XDF recording](/placeholder.svg "Physiological data flow over LSL")
-
-![PLACEHOLDER: Photo of the participant setup: person wearing the Quest headset with EEG cap and a Shimmer sensor on the hand, with the study PC in the background (face not visible or with consent)](/placeholder.svg "A participant wearing the headset and sensors")
+![Physiological data flow: EEG and Shimmer EDA/PPG stream over LSL to both Unity inlets (logged to CSV) and a cognitive-load model service that calibrates on a 30 s baseline, scores 20 s windows and publishes a prediction stream back to Unity.](/images/diagrams/masters-physiology.svg "Physiological data flow over LSL")
+![Diagram of the participant setup: a person wearing the Quest headset and an EEG cap, with a Shimmer sensor on the hand for skin conductance; the signals stream over LSL to the study PC.](/images/diagrams/masters-participant-setup.svg "A participant wearing the headset and sensors (diagram)")
 
 ### How physiology is meant to be used
 
@@ -401,7 +402,7 @@ Only parts of this are implemented: stress above a threshold shortens gaze holds
 
 <!-- TODO: verify the final file formats and field lists a participant session produces, where files end up on the study PC, and how data are merged across the physiological, event and dashboard recordings (e.g. a shared clock). -->
 
-![PLACEHOLDER: Screenshot of a session's output folder in Explorer showing the dated directory with the GSR, EEG, Companion and predEmotion CSVs and the study_events folder (participant ID blurred)](/placeholder.svg "Files written for one session")
+![Diagram of the files written for one session: a dated session folder holding GSR, EEG, Companion and predEmotion CSV files and a study_events folder.](/images/diagrams/masters-session-files.svg "Files written for one session (diagram)")
 
 ## Process
 
@@ -437,4 +438,4 @@ As of mid-November 2026 the project is in progress.
 
 <!-- TODO: John to add the thesis deadline / submission status and any outputs (paper, poster, demo video). -->
 
-![PLACEHOLDER: Short screen recording or a three-frame strip of a full interaction: participant asks 'where is the butter?', the EVC looks at the fridge and points, the fridge door glows](/placeholder.svg "A full help interaction in the kitchen")
+![Diagram in three frames of a help interaction: the participant asks where the butter is, the character looks at the fridge and points to it, and the fridge door glows.](/images/diagrams/masters-help-interaction.svg "A full help interaction in the kitchen (diagram)")

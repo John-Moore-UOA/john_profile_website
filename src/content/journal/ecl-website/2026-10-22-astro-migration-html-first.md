@@ -2,7 +2,7 @@
 project: "ecl-website"
 title: "Migrating the React SPA to Astro so every route ships real HTML"
 date: 2026-10-22
-session: "Session 1: Astro migration"
+session: "Astro migration"
 summary: "I rebuilt the existing React single-page site as an Astro project, keeping routes, look and the content-client seam, and pinned the old behaviour as parity tests first."
 facets: ["What I built"]
 ---
@@ -11,8 +11,7 @@ facets: ["What I built"]
 
 I snapshotted the existing repo, wrote route-parity and "HTML-first" test suites against the old React app, then scaffolded an Astro project and ported it in stages: layout, navbar and footer without a React runtime, prerendered static pages, prerendered detail pages with an `.ics` endpoint, and on-demand filtered list pages. I finished with Cloudflare config, error pages, no-JS fallbacks and a written record of the decisions.
 
-![PLACEHOLDER: Diagram: old React SPA (empty div + JS bundle) vs new Astro build (prerendered HTML per route, small islands for copy-link)](/placeholder.svg "Before and after: what the browser receives")
-
+![Before and after. Old React single page app: the browser gets an empty div and a JS bundle, and content appears after the JS runs. New Astro build: the browser gets prerendered HTML for each route, with a small island for copy-link.](/images/diagrams/ecl-spa-vs-astro.svg "Before and after: what the browser receives")
 ## Why — decisions and trade-offs
 
 - **Astro over keeping the SPA.** The SPA's HTML was an empty root div with the page title set client-side, so link-preview scrapers would show a generic title for shared news, event and publication links. Most of the site is content rendering with only a handful of interactive widgets. <!-- TODO: verify reasoning; this is taken from the plan's rationale, confirm it was your own motivation -->

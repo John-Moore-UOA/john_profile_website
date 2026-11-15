@@ -9,7 +9,9 @@ stack: ["Unity", "C#", "XR Interaction Toolkit", "LSL", "Quest 3S"]
 featured: false
 order: 12
 related: []
-cover: "Screenshot of the VR room with five seated audience members and coloured attention auras above their heads."
+cover: "Illustration of a VR headset above a seated audience."
+image: "/images/public-speaking-vr.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview
@@ -29,7 +31,7 @@ To test how audience feedback, including misleading feedback, affects a speaker.
 - Logging: CSV for frames, events and questionnaire, plus a session JSON; LSL marker sender and stubs for physiology and speech.
 - Runs on Quest 3S via Link, or in desktop debug mode without a headset.
 
-![PLACEHOLDER: Screenshot of the experimenter PC window showing the setup screen and session state](/placeholder.svg "Experimenter view")
+![Diagram of the experimenter PC window in three parts: a setup screen (participant file, Latin square condition order, quick test), the session state (block, condition, topic card and timer, questionnaire stage), and the experimenter overlay with its keys and end panel.](/images/diagrams/ps-experimenter-view.svg "Experimenter view (diagram)")
 
 ## Outcome
 

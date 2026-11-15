@@ -6,6 +6,9 @@ role: "Solo"
 categories: ["AI"]
 stack: ["Python", "Jupyter", "pandas", "scikit-learn"]
 order: 24
+cover: "A scatter plot of two classes split by a learned decision boundary."
+image: "/images/kaggle.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

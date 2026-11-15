@@ -9,10 +9,37 @@ highlight: false
 desc: "Architectural patterns and design at the system level."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A course on how large software systems are structured so they meet non-functional requirements like scalability, security and evolvability, using contemporary frameworks.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Architecture fundamentals
+
+- Architectural structures and views
+- Architecture as the first design step
+- Impact of structure on quality and performance
+
+### Non-functional requirements
+
+- Security
+- Scalability and availability
+- Evolvability and maintainability
+
+### Distributed systems and frameworks
+
+- Application frameworks and middleware
+- Service orientation
+- Data access
+- Concurrency and distribution
+
+## Skills and tools
+
+Software architecture, distributed systems, service-oriented design, middleware, application frameworks, design patterns, non-functional requirements
+
+## Assessment
+
+- Assignments
+- Test
+- Final exam

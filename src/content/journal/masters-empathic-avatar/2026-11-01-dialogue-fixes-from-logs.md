@@ -11,7 +11,7 @@ facets: ["Conversational logic", "Interaction design"]
 
 1-2 November: "can you hear me?", "how do I...?", "is this it?" and meta questions now get code-built answers; the favourite riddle accepts an early right guess and gives a clue after two misses; the fast prompt sees the board by section and number, then as a list rather than a place; scripted lines and old turns are kept out of the model's history; push-to-talk is locked while a phase intro or key line is said; pointing hits padded proxy colliders first.
 
-![PLACEHOLDER: Excerpt of an EVC session log highlighting a turn where the model got it wrong, next to the fix commit](/placeholder.svg "From log to fix")
+![Diagram: a turn in the EVC session log where the model got it wrong is read back, and the fix moves that kind of question (can you hear me, how do I, is this it, questions about the session) to an answer built in code.](/images/diagrams/masters-log-to-fix.svg "From log to fix (diagram)")
 
 ## Why — decisions and trade-offs
 

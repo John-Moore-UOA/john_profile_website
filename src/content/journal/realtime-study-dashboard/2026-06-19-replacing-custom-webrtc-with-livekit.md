@@ -2,7 +2,7 @@
 project: "realtime-study-dashboard"
 title: "Replacing hand-rolled WebRTC with a LiveKit SFU and Egress"
 date: 2026-06-19
-session: "19-20 June"
+session: "LiveKit video"
 summary: "I swapped the custom WebRTC signalling for a LiveKit SFU with server-side Egress recording, anchored to LSL time, and extracted the Unity client into a reusable package."
 facets: ["What I built"]
 ---
@@ -11,8 +11,7 @@ facets: ["What I built"]
 
 I added LiveKit, Egress and Redis to docker-compose, a token endpoint, and Egress recording orchestration anchored to the LSL clock. The frontend subscribes to LiveKit for the live mirror, and Unity gained a LiveKit publisher. Dockerfiles for backend and frontend followed. On 20 June I deleted the legacy WebRTC path, added video-synced signal playback in Data History with a two-point drift correction, and extracted the reusable Unity client into a `com.vcore.client` UPM package with a one-component launcher and a prefab. A LiveKit setup runbook and updated docs were written.
 
-![PLACEHOLDER: Diagram: Unity spectator camera -> LiveKit SFU -> browser dashboard; SFU -> Track Egress -> .webm file; LSL timestamp anchored at egress start](/placeholder.svg "Video plane after the LiveKit migration")
-
+![Video plane after the LiveKit migration: Unity spectator camera to a LiveKit SFU to the browser dashboard, and to Track Egress which writes a .webm file, with the LSL timestamp anchored at egress start.](/images/diagrams/dash-livekit.svg "Video plane after the LiveKit migration")
 ## Why — decisions and trade-offs
 
 - **SFU instead of custom signalling.** Maintaining my own broker and browser-upload recording had been the source of earlier bugs. An SFU gives one publisher, many subscribers and server-side recording. <!-- TODO: verify reasoning -->

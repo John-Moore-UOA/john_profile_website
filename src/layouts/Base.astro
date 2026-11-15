@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/flashy.css';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 interface Props { title?: string; description?: string; }
@@ -22,6 +23,7 @@ const nav = [
 </head>
 <body class={home ? 'home' : undefined}>
   <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
   <header class="nav">
     <div class="wrap">
       <a class="brand" href="/">{site.name}</a>
@@ -40,17 +42,10 @@ const nav = [
       <span>{site.location}</span>
     </div>
   </footer>
-  {home && (
-    <script>
-      const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('[data-spy]')].map((a) => [a.dataset.spy!, a]));
-      const io = new IntersectionObserver((entries) => {
-        for (const e of entries) if (e.isIntersecting) {
-          links.forEach((a) => a.removeAttribute('aria-current'));
-          links.get(e.target.id)?.setAttribute('aria-current', 'true');
-        }
-      }, { rootMargin: '-45% 0px -50% 0px' });
-      links.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
-    </script>
-  )}
+  <script>
+    import '../scripts/scene.ts';
+    import '../scripts/fx.ts';
+    import '../scripts/nav.ts';
+  </script>
 </body>
 </html>

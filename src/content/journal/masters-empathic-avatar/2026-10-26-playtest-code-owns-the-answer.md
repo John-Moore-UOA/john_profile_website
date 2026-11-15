@@ -18,7 +18,7 @@ facets: ["Conversational logic", "Interaction design", "Avatar behaviour"]
 - Code-resolved questions: "the last item", "the third one", "is it in here?", "what else?", "what is next?".
 - Door, knife and dropped-item fixes.
 
-![PLACEHOLDER: Screenshot from the headset view showing the live caption of the participant's speech at the bottom of the view](/placeholder.svg "Live caption of the participant's speech")
+![Diagram: push-to-talk on a controller trigger goes to speech-to-text, and the recognised words appear as a caption at the bottom of the headset view, below the character.](/images/diagrams/masters-live-caption.svg "Live caption of the participant's speech (diagram)")
 
 ## Why — decisions and trade-offs
 

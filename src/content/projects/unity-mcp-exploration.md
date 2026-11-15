@@ -7,6 +7,9 @@ categories: ["AI", "XR", "Tools"]
 stack: ["Unity", "C#", "MCP", "Roslyn", "Python"]
 related: ["live-app-mcp"]
 order: 15
+cover: "An AI agent sending tool calls through MCP to the Unity Editor."
+image: "/images/unity-mcp.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

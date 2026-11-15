@@ -9,10 +9,37 @@ highlight: false
 desc: "Formal methods for specifying and reasoning about software correctness."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A course on using mathematical specification to show software design is correct, through three formal notations and their tools.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Formal methods foundations
+
+- Role of specification and verification
+- Set theory and predicate logic
+- Relations, functions and sequences
+
+### The B method
+
+- States, invariants and operations
+- Machine composition
+- Proof obligations
+
+### OCL and CSP
+
+- Object Constraint Language for UML
+- Invariants, pre- and post-conditions
+- Validating models with USE
+- CSP processes, events and concurrency
+
+## Skills and tools
+
+Formal methods, B method, OCL, UML, CSP, predicate logic, set theory, model verification, specification
+
+## Assessment
+
+- Assignments
+- Test
+- Final exam

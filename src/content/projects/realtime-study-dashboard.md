@@ -9,7 +9,8 @@ stack: ["Python", "FastAPI", "React", "LiveKit", "LSL", "WebSocket", "Unity"]
 featured: false
 order: 3
 related: ["masters-empathic-avatar"]
-cover: "Dashboard screenshot: signal charts beside the live participant VR view."
+cover: "The operator dashboard before a headset connects: context, VR feed and signal panels."
+image: "/images/dashboard/unconnected.png"
 ---
 
 ## Overview
@@ -30,7 +31,21 @@ Running a study blind to the participant's state is limiting. The operator needs
 - Five versioned contracts (signal schema, rule grammar, object-status, VR context, Unity behaviour) keep indicators, rules and VR environments swappable.
 - Mock signal pipeline and mock Unity client for hardware-free testing.
 
-![PLACEHOLDER: Diagram: sensors -> LSL -> backend (rule engine, recorder) <-> WebSocket <-> Unity; Unity camera -> LiveKit SFU -> dashboard](/placeholder.svg "Dashboard architecture")
+![Dashboard architecture: sensors to LSL to the backend (rule engine, recorder), which talks to Unity over WebSocket. The Unity camera goes through a LiveKit SFU to the operator dashboard.](/images/diagrams/dash-overview.svg "Dashboard architecture")
+## Operator controls
+
+The console is built for a therapist or experimenter who is watching a live session and may need to step in.
+
+- **Manual controls.** A panel to change the participant's room (lighting, for example) with a preview beside what the headset currently shows, so a change can be checked before it is applied.
+- **Assistance cues.** Per-step buttons that appear in the headset, such as highlighting an object or repeating the hint.
+- **Notes and report.** Timestamped notes grouped by phase, and a session report that can include the notes and an AI summary.
+- **An adaptive mode.** A switch for an auto-adaptive environment, with ranges for each scene object. This was designed but is not finished.
+<!-- TODO: verify which of these controls are live in study sessions -->
+
+![First design iteration of the operator view.](/images/dashboard/first-iteration.png "First design iteration (July)")
+
+![Ranges for the adaptive environment.](/images/dashboard/adaptive-ranges.png "Settings for the adaptive environment")
+
 
 ## Outcome
 

@@ -11,7 +11,7 @@ facets: ["System architecture", "Conversational logic"]
 
 Planned the fast/slow role split on 27 October, then on 29 October added a Gemini Vertex backend (request mapping with self-tests, a cached access token), a `SlowModelSwitch` that toggles local vLLM in Docker versus cloud and starts or stops the container, a 20 s floor for cloud requests, and a docs page. I also changed the Qwen models used.
 
-![PLACEHOLDER: Screenshot of the Unity inspector showing the SlowModelSwitch component with Local and Cloud options](/placeholder.svg "The slow model toggle")
+![Diagram: a slow-loop request passes through the SlowModelSwitch, which routes it either to a local vLLM model in Docker (starting or stopping the container) or to Gemini on Vertex in the cloud, with a cached access token and a 20 second floor between requests.](/images/diagrams/masters-slow-switch.svg "The slow model toggle (diagram)")
 
 ## Why — decisions and trade-offs
 

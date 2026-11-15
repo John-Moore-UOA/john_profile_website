@@ -2,8 +2,8 @@
 project: "ecl-website"
 title: "Putting a headless Payload CMS behind the existing content client over REST"
 date: 2026-10-22
-session: "Session 2: CMS"
-summary: "In the same day's evening I planned and built a Payload CMS where every visitor-facing string, link and image is a CMS field, and made Astro read it through a REST adapter."
+session: "CMS"
+summary: "I planned and built a Payload CMS where every visitor-facing string, link and image is a CMS field, and made Astro read it through a REST adapter."
 facets: ["What I built"]
 ---
 
@@ -11,8 +11,7 @@ facets: ["What I built"]
 
 I added the Payload website template as a baseline, wrote a plan and content inventory, moved hard-coded UI text and navigation into the content model, stripped the template to a CMS skeleton, added every content collection plus site and page globals, wired a rebuild hook after published changes, and seeded the database from the Astro placeholder content. Astro then read from Payload through a `CONTENT_SOURCE=payload` switch.
 
-![PLACEHOLDER: Diagram: Payload admin -> REST API -> payload adapter -> ContentClient -> Astro views; afterChange hook -> deploy hook -> rebuild](/placeholder.svg "CMS to site data flow")
-
+![CMS to site data flow: Payload admin, REST API, a payload adapter, the ContentClient interface, then Astro views. A separate path: the afterChange hook calls a deploy hook, which triggers a rebuild.](/images/diagrams/ecl-cms-flow.svg "CMS to site data flow")
 ## Why — decisions and trade-offs
 
 - **Headless, REST adapter.** Astro runs on Cloudflare Workers, which cannot load Payload's in-process Local API, so a REST adapter maps documents into the existing content types and components stay unchanged.

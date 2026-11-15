@@ -2,7 +2,7 @@
 project: "qr-code-generator"
 title: "Blending an image into the QR code with 3x3 sub-pixels"
 date: 2026-09-25
-session: "Session 1: Build"
+session: "Build"
 summary: "I built a live-preview Flask QR app whose blend mode hides an image in the code by splitting each module into 3x3 sub-pixels, then exposed the same engine as a Claude skill."
 facets: ["What I built"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built"]
 
 The folder is not a git repo; file dates put the work on 25 September. I built a Flask app with a single page that re-renders on every control change. Modes are none, hollow (a cleared square) and blend. Blend splits each covered module into 3x3 sub-pixels: the centre carries the data and the other eight show the image, while finder, timing, alignment and format patterns stay solid. I added colour and gradients, size snapped to whole pixels per module, brightness, fit modes (cover, contain, squish, tile), a knockout for white backgrounds, and an optional zxing-cpp decode check. A `qr-code` Claude skill with `make_qr.py` calls the same `/api/qr` endpoint.
 
-![PLACEHOLDER: screenshot of the app with a blended-logo QR code and the decode-check result](/placeholder.svg "Blend mode in the UI")
+![A QR code with a lab logo blended into the modules.](/images/qr-blend.png "Blend mode output")
 
 ## Why — decisions and trade-offs
 

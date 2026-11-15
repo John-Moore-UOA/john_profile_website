@@ -19,6 +19,8 @@ export async function getStaticPaths() {
 }
 const { p, e, i, total, prev, next } = Astro.props;
 const { Content, headings } = await render(e);
+const isM = p.id === 'masters-empathic-avatar';
+const label = (x: typeof e, n: number) => isM ? x.data.session : `Entry ${n + 1}: ${x.data.session}`;
 const toc = headings.filter((h) => h.depth === 2);
 ---
 <Base title={`${e.data.title} · ${p.data.title}`} description={e.data.summary}>
@@ -26,7 +28,7 @@ const toc = headings.filter((h) => h.depth === 2);
     <header class="page-head field">
       <div class="wrap head">
         <a class="back" href={`/projects/${p.id}/#journal`}><Icon name="back" />{p.data.title}</a>
-        <p class="entry-meta"><strong>{e.data.session}</strong><time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time><span>Entry {i + 1} of {total}</span></p>
+        <p class="entry-meta"><strong>{label(e, i)}</strong>{isM && <time datetime={e.data.date.toISOString().slice(0, 10)}>{fmtDate(e.data.date)}</time>}<span>Entry {i + 1} of {total}</span></p>
         <h1>{e.data.title}</h1>
         <p class="sum">{e.data.summary}</p>
       </div>
@@ -52,8 +54,8 @@ const toc = headings.filter((h) => h.depth === 2);
       <div class="body">
         <div class="prose"><Content /></div>
         <nav class="pager" aria-label="Journal entries">
-          {prev && <a href={`/projects/${p.id}/log/${entrySlug(prev)}/`}><span>← {prev.data.session}</span>{prev.data.title}</a>}
-          {next && <a class="nx" href={`/projects/${p.id}/log/${entrySlug(next)}/`}><span>{next.data.session} →</span>{next.data.title}</a>}
+          {prev && <a href={`/projects/${p.id}/log/${entrySlug(prev)}/`}><span>← {label(prev, i - 1)}</span>{prev.data.title}</a>}
+          {next && <a class="nx" href={`/projects/${p.id}/log/${entrySlug(next)}/`}><span>{label(next, i + 1)} →</span>{next.data.title}</a>}
         </nav>
       </div>
     </div>
