@@ -11,7 +11,9 @@ facets: ["What I built"]
 
 The 11 November commit adds a DuoLab building system: a catalog of block shapes and prefabs (including new J and Z pieces), three challenge goals (C1 to C3), materials for furniture and desks, and a build debug server. On the game side there is a game-state controller, a `PartnerStandIn`, a seat manager, and a LAN connector script (`DuoLabLanConnector`) for joining by IP. The physio sources and band-power calculator were adjusted, and the player body solver changed substantially (about 180 lines). Setup editor scripts were added to build the scene state.
 
-![PLACEHOLDER: Screenshot of the DuoLab room: the build table with blocks, a goal shape, and the partner stand-in seated opposite](/placeholder.svg "Building task in DuoLab")
+![A wireframe block being placed on a snapping grid in the shared room.](/images/eeg-blocks-placement.png "Placing a block on the shared build grid")
+
+![The block connection debugger: a 3D view of the structure, an event list and a snap inspector.](/images/eeg-blocks-debugger.png "The block connection debugger")
 
 ## Why — decisions and trade-offs
 

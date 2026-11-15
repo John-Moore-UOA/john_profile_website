@@ -9,10 +9,36 @@ highlight: false
 desc: "Core data structures, algorithm design and complexity analysis."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A course on how to store and process data efficiently, and how to tell whether a program will scale. I analysed algorithm performance and chose data structures to match.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Complexity analysis
+
+- Big-O notation
+- Best, worst and average cases
+- Measuring how programs scale
+
+### Data structures
+
+- Lists, stacks and queues
+- Trees and balanced trees
+- Hash tables and heaps
+
+### Classic algorithms
+
+- Sorting algorithms
+- Searching
+- Graph algorithms such as traversal and shortest paths
+
+## Skills and tools
+
+Data structures, algorithms, Big-O analysis, sorting, graph algorithms, hash tables, trees, programming
+
+## Assessment
+
+- Programming assignments
+- Test
+- Final exam

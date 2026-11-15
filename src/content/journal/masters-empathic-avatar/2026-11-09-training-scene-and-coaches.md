@@ -11,7 +11,7 @@ facets: ["Study design and operator tooling", "Interaction design", "Data pipeli
 
 10 November: wrote the training-scene design and plan, then implemented a grab gate on the trial interaction lock, a pure step flow with rewind, section labels and a step log, a pot, hob and cup, a lemon that cuts into two halves, a to-do board with a "not yet" label, and the white-room scene. On 12 November a large commit added the EVC cook and order coaches, help logic, the training runtime and study assets.
 
-![PLACEHOLDER: Screenshot of the white training room with the to-do board, bench, pot and hob](/placeholder.svg "The training scene")
+![Diagram of the white training room: a numbered to-do board on the wall and a bench holding a pot on the hob, a bottle, a lemon, a knife and a cup.](/images/diagrams/masters-training-scene.svg "The training scene (diagram)")
 
 ## Why — decisions and trade-offs
 

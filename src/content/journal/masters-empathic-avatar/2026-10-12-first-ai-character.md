@@ -11,7 +11,7 @@ facets: ["System architecture", "Conversational logic", "Avatar behaviour"]
 
 The commit on 14 October ("AI") brought in the Empathic Virtual Character code under `Assets/EVC`, avatar control (clip player, look-at), facial motion capture from a webcam, and a local speech server. It is a very large commit, so it was probably several weeks of local work landing at once. <!-- TODO: verify what was built before this commit -->
 
-![PLACEHOLDER: Screenshot of the character standing in the kitchen with the debug overlay visible](/placeholder.svg "First AI character in the kitchen")
+![An early character in the Unity scene view with its eye, jaw and arm bones drawn in blue.](/images/masters/first-character-rig.png "An early character with its rig bones drawn")
 
 ## Why — decisions and trade-offs
 

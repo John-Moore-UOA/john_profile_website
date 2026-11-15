@@ -1,17 +1,17 @@
 ---
 project: "public-speaking-vr"
 title: "Tasks 7-13 and staged surveys: a Latin square, JSON questionnaires and CSV logging"
-date: 2026-11-11
-session: "Build part 2 (T7-T13 and T14)"
+date: 2026-11-11T03:00:00Z
+session: "Logging and surveys"
 summary: "I finished the experiment scaffolding: counterbalanced participant files, topic cards and timers, an in-VR questionnaire from JSON, CSV logging, LSL and physiology stubs, and an experimenter overlay, then added staged surveys and a performance tracker."
 facets: ["What I built", "Outcome"]
 ---
 
 ## What I did
 
-T7 added a setup screen, participant JSON files and a Latin square generator. T8 added the topic card and timers, T9 an in-VR questionnaire loaded from JSON, T10 a CSV logger (frames, events, questionnaire and a session JSON), T11 an LSL marker sender plus physiology and speech stubs, T12 an experimenter overlay and end panel, and T13 an integration audit and README. Later that day a larger commit (titled only "1/4 fable") added config assets, a performance tracker and tuning, and a design note describes staged surveys (pre-session, post-practice, post-block, post-session) read from a JSON file.
+T7 added a setup screen, participant JSON files and a Latin square generator. T8 added the topic card and timers, T9 an in-VR questionnaire loaded from JSON, T10 a CSV logger (frames, events, questionnaire and a session JSON), T11 an LSL marker sender plus physiology and speech stubs, T12 an experimenter overlay and end panel, and T13 an integration audit and README. A later, larger commit (titled only "1/4 fable") added config assets, a performance tracker and tuning, and a design note describes staged surveys (pre-session, post-practice, post-block, post-session) read from a JSON file.
 
-![PLACEHOLDER: Screenshot of the experimenter PC window showing the setup screen, session state and quick-test option](/placeholder.svg "Experimenter view")
+![Diagram of the experimenter PC window in three parts: a setup screen (participant file, Latin square condition order, quick test), the session state (block, condition, topic card and timer, questionnaire stage), and the experimenter overlay with its keys and end panel.](/images/diagrams/ps-experimenter-view.svg "Experimenter view (diagram)")
 
 ## Why — decisions and trade-offs
 

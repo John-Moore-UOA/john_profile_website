@@ -9,7 +9,8 @@ stack: ["Unity 6", "C#", "XR Interaction Toolkit", "LSL", "Python", "Ollama / vL
 featured: true
 order: 1
 related: ["realtime-study-dashboard"]
-cover: "A wide VR screenshot from the headset view of the apartment kitchen: the embodied character standing across the counter, the recipe whiteboard on the wall, and the participant's own avatar visible in the mirror. Warm, even lighting."
+cover: "The empathic virtual character: a man in a striped green shirt, seen from the chest up."
+image: "/images/masters/evc-character.png"
 ---
 
 <!-- TODO: verify year (first commit is 2026-08-24; the Masters may have started earlier), role wording, and whether anything has been published or presented. -->
@@ -20,13 +21,15 @@ This is my Masters research project at the Empathic Computing Lab, University of
 
 Around the character sits the machinery of a controlled study: four cooking trials, a training scene, three body conditions, scripted interruptions, EEG and skin-conductance sensing over Lab Streaming Layer, logging, and an operator dashboard (V-CORE) for the facilitator. The detailed design is in the [system reference](/reference/masters-empathic-avatar), and the decisions behind it are in the design journal.
 
-![PLACEHOLDER: Hero shot from the participant's headset view: the character in the apartment kitchen with the recipe whiteboard behind it, mid-conversation with a subtitle line at the bottom](/placeholder.svg "The participant's view of the character in the kitchen")
+![The apartment kitchen the participant works in, seen in the Unity scene.](/images/masters/kitchen.png "The kitchen the participant and the character share")
 
 ## Why
 
 <!-- TODO: John to write the research motivation and question: why an empathic embodied character for guided task support, why physiological sensing, why cooking, and the rehabilitation angle. The design notes imply a rehabilitation-style setting (errorless learning, named strategies) but do not state the thesis question. -->
 
 The design notes do show the stance I took: the character should help at the right time and in the right way, and it should never tell the participant what the sensors think of them.
+
+![A grid of facial expressions on a high-fidelity character head.](/images/hr-faces.jpg "The range of expression a character face can carry. Image found online; source and licence to be confirmed before launch")
 
 ## Where it stands
 

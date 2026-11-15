@@ -1,8 +1,8 @@
 ---
 project: "eeg-visualization-multiplayer"
 title: "Web prototype: building the LSL bridge and wire contract before the 3D head"
-date: 2026-10-24
-session: "Prototype, session 1"
+date: 2026-10-24T01:00:00Z
+session: "Web prototype"
 summary: "For the Three.js EEG head prototype I wrote and tested the LSL-to-WebSocket bridge and a design spec first, and set rules for the front end such as per-band normalisation and never silently falling back to mock data."
 facets: ["What I built", "Process"]
 ---
@@ -13,8 +13,7 @@ facets: ["What I built", "Process"]
 
 The brief was a single-page Three.js viewer showing EEG band power on a procedural low-poly head with 10-20 electrodes that glow by band power, an interpolated scalp heatmap and a band dropdown. I started with the data layer. `bridge.py` reads an LSL EEG stream (or a mock generator), keeps a ring buffer per channel, computes band power with a Welch spectrum on a 2 s window, and broadcasts JSON over WebSocket at about 10 Hz. I wrote a test client and a fake 10-channel 256 Hz LSL outlet to check it. A design spec and a notes file on the bridge's wire-contract caveats came before any front-end code.
 
-![PLACEHOLDER: Diagram: EEG headset -> LSL stream -> bridge.py (ring buffer, Welch PSD) -> WebSocket JSON at 10 Hz -> Three.js page (normalise, colour lookup, heatmap)](/placeholder.svg "Prototype data path")
-
+![Prototype data path: EEG headset, LSL stream, bridge.py with a ring buffer and Welch PSD, WebSocket JSON at 10 Hz, then a Three.js page that normalises, looks up colour and draws a heatmap.](/images/diagrams/eeg-prototype.svg "Prototype data path")
 ## Why — decisions and trade-offs
 
 - **Data separate from rendering.** A mock generator and a WebSocket source sit behind one interface, so the page can switch from mock to live without changes.

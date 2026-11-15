@@ -9,10 +9,31 @@ highlight: false
 desc: "Java and object-oriented programming and design fundamentals."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+My first proper look at object-oriented programming, using Java. The focus was on modelling a problem and designing clean code, using professional tools throughout.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Object-oriented programming
+
+- Classes, objects and encapsulation
+- Inheritance and polymorphism
+- Interfaces and abstract classes
+- Design for readable, maintainable code
+
+### Engineering practice
+
+- Code style conventions
+- Version control with Git and GitHub
+- Build automation with Maven
+- Unit testing with JUnit
+
+## Skills and tools
+
+Java, object-oriented design, Git, GitHub, Maven, JUnit, VS Code, code style
+
+## Assessment
+
+- Programming assignments
+- Tests

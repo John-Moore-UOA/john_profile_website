@@ -8,8 +8,10 @@ categories: ["AI", "Tools"]
 stack: ["Python", "Chatterbox", "Qwen3-TTS", "Whisper", "MCP", "HTML/JS"]
 featured: false
 order: 6
+spotlight: true
 related: ["live-app-mcp"]
-cover: "Screenshot of the Studio Story tab with lines, emotion arc and render queue dock."
+cover: "The Studio Story tab: lines, emotion arc and render queue."
+image: "/images/tts-studio.png"
 ---
 
 ## Overview
@@ -28,7 +30,6 @@ I wanted a fast loop for designing character voices and tuning delivery without 
 - Render queue with live tokens/s, and a Whisper word-accuracy plus pitch check on every take, with optional auto-retakes.
 - An MCP server (`studio_mcp.py`) so Claude can drive the open Studio live; see [Live App MCP](/projects/live-app-mcp).
 
-![PLACEHOLDER: screenshot of the Studio Story tab](/placeholder.svg "TTS Studio Story tab")
 
 ## Outcome
 

@@ -11,7 +11,7 @@ facets: ["Environment design", "Avatar design"]
 
 Added the oven (7 September), bread with morph changes, salt spreading and an egg on bread (9-11 September), and a pizza (15 September). On 17-18 September I imported the first character ("Char") and kept a "pre_avatar_change" snapshot, then added egg cracking and a spawn commit on 23 September.
 
-![PLACEHOLDER: Screenshot of a food item before and after a state change (e.g. raw vs cooked pizza, or egg cracked on bread)](/placeholder.svg "Food that changes state")
+![A pan on the hob flagged isOiled while other food items wait on the counter.](/images/masters/food-interaction.png "Food state on screen (isOiled on the pan)")
 
 ## Why — decisions and trade-offs
 

@@ -6,6 +6,9 @@ role: "Solo developer"
 categories: ["AI", "Tools"]
 stack: ["Python", "YOLO", "ONNX Runtime", "OpenCV", "React", "Flask"]
 order: 18
+cover: "Faces grouped into one cluster per person, with the photos each person appears in."
+image: "/images/face-sort.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

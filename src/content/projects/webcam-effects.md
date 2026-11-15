@@ -6,6 +6,9 @@ role: "Solo"
 categories: ["Tools"]
 stack: ["Python", "OpenCV", "NumPy"]
 order: 23
+cover: "A webcam frame split into red, green and blue channels with a face-tracking box and grid."
+image: "/images/webcam-effects.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

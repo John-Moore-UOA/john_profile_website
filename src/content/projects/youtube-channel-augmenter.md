@@ -6,6 +6,9 @@ role: "Solo"
 categories: ["AI", "Tools"]
 stack: ["Python", "yt-dlp", "Whisper", "Hugging Face Transformers"]
 order: 20
+cover: "A video becomes audio, then a transcript, which an LLM uses to answer questions."
+image: "/images/youtube-augmenter.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

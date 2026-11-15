@@ -9,7 +9,9 @@ stack: ["Python", "Ollama", "Gemini", "faster-whisper", "Kokoro TTS", "YOLOE", "
 featured: false
 order: 2
 related: []
-cover: "Screenshot of the live page: webcam view with object masks, track ids and belief bars."
+cover: "Illustration: webcam and mic feed an agent with a fast loop and a slow loop."
+image: "/images/webcam-conversational-agent.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview
@@ -27,8 +29,7 @@ Answers need to be fast to feel conversational but also well grounded. <!-- TODO
 - Fast loop: a small local model via Ollama replies right away, streamed sentence by sentence and spoken by TTS. It uses cached context (object cards and scene-check hooks as a fixed prompt prefix) so replies start quickly.
 - Slow loop: Gemini (Vertex AI) runs in the background. It does the scene check that names the objects, looks things up, and checks or deepens claims, feeding verified notes back to the fast loop.
 
-![PLACEHOLDER: Diagram: webcam + mic + gaze/pointing -> server -> fast loop (Ollama) -> TTS reply; slow loop (Gemini) -> scene check, lookups, verified notes -> fast loop context](/placeholder.svg "Fast and slow loops")
-
+![Fast and slow loops: webcam, mic, gaze and pointing go to a Python server, which drives a fast Ollama loop that speaks via TTS. A slow Gemini loop does scene checks, lookups and verified notes that feed back into the fast loop context.](/images/diagrams/webcam-loops.svg "Fast and slow loops")
 **Other pieces**
 
 - Speech in (faster-whisper with word timestamps) and out (Kokoro TTS), with barge-in.

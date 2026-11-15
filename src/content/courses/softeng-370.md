@@ -9,10 +9,37 @@ highlight: false
 desc: "Operating system internals — processes, memory and concurrency."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A look under the hood of operating systems, covering processes, memory and concurrency, from desktops down to embedded devices and up to distributed computing.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Processes and concurrency
+
+- Processes and threads
+- CPU scheduling
+- Synchronisation and deadlocks
+- Parallel programming
+
+### Memory and storage
+
+- Virtual memory and paging
+- File systems
+- I/O management
+
+### Modern systems
+
+- Virtualisation
+- Distributed computing
+- Embedded operating systems
+
+## Skills and tools
+
+Operating systems, C, concurrency, multithreading, scheduling, virtual memory, file systems, virtualisation, Linux
+
+## Assessment
+
+- Programming assignments
+- Test
+- Final exam

@@ -11,7 +11,7 @@ facets: ["What I built", "Process"]
 
 On 4 November I wrote two design specs. "Stain World" lets the puzzle player's state spread a biome-coloured liquid from their seat while the observer's emotions are never read. "Mood Forest" replaces it: a score from -1 to 1 per player (0 is their resting baseline) shapes that player's half of a small forest, with a border through the shared table. Neutral is a green forest; one direction goes to autumn, falling leaves and a storm, the other to haze and then a still, misty forest. I then committed a first pass: the DuoLab scene, per-half leaf colour, canopy thinning, regrowth memory, an F1 debug panel and network slots. Stain World was disabled, not deleted.
 
-![PLACEHOLDER: Screenshot of the Mood Forest with the two halves visibly different at the border (one autumn, one misty)](/placeholder.svg "Mood Forest, two halves meeting at the border")
+![The DuoLab scene pushed towards autumn: orange leaves and a dark sky around a player seated at the puzzle table.](/images/eeg-mood-forest-autumn.png "Mood Forest pushed towards autumn")
 
 ## Why — decisions and trade-offs
 

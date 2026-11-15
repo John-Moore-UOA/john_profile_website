@@ -9,7 +9,9 @@ stack: ["MCP", "Python", "HTTP/REST", "Claude Code skills", "JavaScript"]
 featured: false
 order: 13
 related: ["tts-studio"]
-cover: "Architecture diagram of Claude, the MCP server, the app server and the open browser UI."
+cover: "Illustration: Claude Code sends a command over MCP and the open app changes."
+image: "/images/live-app-mcp.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview
@@ -18,8 +20,7 @@ Live App MCP is a Claude Code skill: a recipe plus conventions that make an app 
 
 ## Architecture
 
-![PLACEHOLDER: Diagram: Claude Code -(MCP over stdio)-> app_mcp.py -(HTTP: /api/rev, /api/view, state GET/PUT with base_rev)-> app server (state file/DB, long-running jobs) <-(UI polls /api/rev every 1.5 s; POSTs /api/view)-> browser UI](/placeholder.svg "Live App MCP architecture")
-
+![Live App MCP architecture: Claude Code talks MCP over stdio to app_mcp.py, which talks HTTP to the app server (state GET/PUT with base_rev, /api/rev, /api/view). The browser UI polls /api/rev every 1.5 seconds and posts /api/view.](/images/diagrams/live-app-mcp.svg "Live App MCP architecture")
 The MCP server is a separate stdio process (`mcp` 2.x `MCPServer`). It never imports the app (which may hold GPU models); it only talks to the app's HTTP API. Claude Code launches it after a one-time `claude mcp add` at user scope.
 
 ## Protocol: how the generated server attaches

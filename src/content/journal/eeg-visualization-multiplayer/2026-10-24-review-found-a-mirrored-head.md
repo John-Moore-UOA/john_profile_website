@@ -1,8 +1,8 @@
 ---
 project: "eeg-visualization-multiplayer"
 title: "Review round: the specification itself had a mirrored head"
-date: 2026-10-24
-session: "Prototype, session 2"
+date: 2026-10-24T02:00:00Z
+session: "Prototype review"
 summary: "A validation and design review of the Three.js build found that my own spec drew the left hemisphere on the wrong side, and that the head did not read as a head. I changed the colour scale and face geometry from the evidence."
 facets: ["What I built", "Process"]
 ---
@@ -13,7 +13,7 @@ facets: ["What I built", "Process"]
 
 A coder pass built `index.html` against the design spec, logging 23 deviations with a reason each. A validation pass then ran headless-browser tests: console errors, electrode positions in each camera preset, end-to-end data checks, a hostile WebSocket server, a window resize storm, hidden tabs, and a real Ctrl+C sent to the bridge on Windows. A design pass critiqued screenshots and proposed a patch for the head.
 
-![PLACEHOLDER: Screenshot of the Three.js head with electrode glows and scalp heatmap, front and profile views](/placeholder.svg "Prototype head after the review")
+![The 3D head with electrode positions and a band-power heatmap, with channel read-outs at the right.](/images/eeg-viz.png "The Three.js scalp topography view")
 
 ## Why — decisions and trade-offs
 

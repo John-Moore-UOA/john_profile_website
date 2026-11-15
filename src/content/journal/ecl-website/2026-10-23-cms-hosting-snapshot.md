@@ -2,7 +2,7 @@
 project: "ecl-website"
 title: "Hosting the CMS on Cloud Run and bundling a content snapshot into the site"
 date: 2026-10-23
-session: "Session 3: Hosting"
+session: "Hosting"
 summary: "I put the CMS on Cloud Run with Turso and R2 and made the public site build against a bundled snapshot, so the deployed site never calls the CMS."
 facets: ["What I built"]
 ---
@@ -11,8 +11,7 @@ facets: ["What I built"]
 
 I added Turso database support with migrations, S3-compatible (R2) media storage, a standalone Next output with a Dockerfile, and a small Worker that puts the CMS on a custom domain in front of Cloud Run. On the site side I added a build-time CMS snapshot bundled into the Worker and resolved upload URLs against the snapshot's CMS origin. I also made events show times in their own timezone and gave presentations their own page and collection.
 
-![PLACEHOLDER: Diagram: CMS (Cloud Run + Turso + R2) -> snapshot at build time -> Astro Worker; editor save -> rebuild hook](/placeholder.svg "Hosting topology")
-
+![ECL website hosting: an editor saves in the Payload CMS on Cloud Run with Turso and R2, a content snapshot is fetched at build time, Astro prerenders HTML and deploys it as a static site on a Cloudflare Worker. A rebuild hook from the CMS triggers the build on each save.](/images/diagrams/ecl-hosting.svg "Hosting topology")
 ## Why — decisions and trade-offs
 
 - **Snapshot instead of runtime calls.** The public site stays static and fast and keeps working if the CMS is down. <!-- TODO: verify reasoning -->

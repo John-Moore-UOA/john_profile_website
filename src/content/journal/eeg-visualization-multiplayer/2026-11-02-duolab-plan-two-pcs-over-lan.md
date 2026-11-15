@@ -11,8 +11,9 @@ facets: ["What I built", "Process"]
 
 The first commit (2 November) was the project itself: a Unity 6 project based on a VR multiplayer template, with XR Interaction Toolkit, Netcode for GameObjects and Multiplayer Services. I copied its basic scene into an `EEG_DuoLab` scene and wrote a plan document, with each decision dated 2 November. The plan reuses ideas from my Masters project (LSL inlets, the emotion stream, the body IK scripts, the data logger) and from the web prototype (band-power maths, normalisation rules, a mock source).
 
-![PLACEHOLDER: Diagram: PC A and PC B each with Unicorn EEG -> LSL -> cognitive-load service -> Unity (band power) -> Netcode -> the other PC](/placeholder.svg "DuoLab architecture from the plan")
+![DuoLab architecture: PC A and PC B each run Unicorn EEG into LSL, a cognitive-load service and Unity (band power), and the two Unity instances exchange state through Netcode over the LAN.](/images/diagrams/eeg-duolab.svg "DuoLab architecture from the plan")
 
+![An EEG cap on a head, seen from the side.](/images/masters/eeg-cap.png "The EEG cap each participant wears")
 ## Why — decisions and trade-offs
 
 - **Do not send LSL over the network.** Multicast across subnets or university Wi-Fi is unreliable and has no session semantics. Raw 250 Hz samples stay local and are logged locally. The network carries band powers at about 10 Hz and cognitive-load state about every 10 s, which the plan estimates at under 2 KB/s per player.

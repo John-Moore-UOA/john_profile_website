@@ -11,8 +11,7 @@ facets: ["Conversational logic", "Study design and operator tooling", "Environme
 
 Wrote the spec and implementation plan on 5 November (design only that day; no code commits). The spec covers a planning strategy (which item do we start first, what goes on the plate first), a scanning strategy for shelves of look-alike items, a merged Prepare + Cook phase that opens with planning, timed cooking with auto-off before anything burns, and a single High/Low cognitive state.
 
-![PLACEHOLDER: Diagram of the cook-cue ladder: suggestion -> direction -> done window -> auto-off, along a timeline](/placeholder.svg "Timed cooking cue ladder")
-
+![Timed cooking cue ladder along a timeline: suggestion, then direction, then a done window, then auto-off. Each rung only fires if the participant has not yet acted.](/images/diagrams/masters-cook-ladder.svg "Timed cooking cue ladder")
 ## Why — decisions and trade-offs
 
 - **Strategies as small pure-C# state machines** behind one interface, run by the existing episode runner. I chose this over refactoring the runner so a new strategy costs one file and one case.

@@ -9,10 +9,37 @@ highlight: false
 desc: "Computer networking principles and security fundamentals."
 ---
 
-<!-- TODO (John): write this page yourself. Suggested sections below; delete what you don't use. -->
+## Overview
 
-## What the course covered
+A top-down tour of computer networks, focused on the internet. I covered the upper four layers of the stack and used real tools in labs and assignments.
 
-## What I built or wrote
+## Topics covered
 
-## How it connects to my work
+### Application and transport layers
+
+- Application-layer protocols such as HTTP and DNS
+- TCP and UDP
+- Congestion and flow control
+
+### Network and link layers
+
+- IP addressing and routing
+- Network edge and core
+- Link-layer protocols
+
+### Performance and security
+
+- Delay, throughput and loss
+- Network security issues
+- Network analysis tools
+
+## Skills and tools
+
+Computer networking, TCP/IP, HTTP, DNS, routing, network security, Wireshark, network analysis, protocols
+
+## Assessment
+
+- Labs
+- Assignments
+- Test
+- Final exam

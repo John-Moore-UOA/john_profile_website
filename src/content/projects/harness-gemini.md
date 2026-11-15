@@ -8,7 +8,9 @@ categories: ["AI", "Tools"]
 stack: ["Gemini", "Python", "PowerShell", "Node.js", "Claude Code skills"]
 featured: false
 order: 16
-cover: "Terminal screenshot of a brainstorm run and the resulting brief file."
+cover: "Illustration: one request fans out to six personas and a judge merges them into one brief."
+image: "/images/harness-gemini.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview
@@ -26,8 +28,7 @@ Codebase exploration and literature search eat context and usage. I offload that
 - Sub-agents for code reading and literature scouting; model aliases for cost control.
 - Claude skills linked in via junctions so teardown is one command.
 
-![PLACEHOLDER: Diagram: Claude Code skill -> orchestrator -> codebase stage -> literature stage -> 6 personas -> judge -> brief file](/placeholder.svg "Harness pipeline")
-
+![Harness pipeline: a Claude Code skill calls brainstorm.py, which runs a cached codebase stage, a literature stage, six personas in parallel and a judge, and writes 40_brief.md.](/images/diagrams/harness-pipeline.svg "Harness pipeline")
 ## Outcome
 
 Working prototype used for planning and research.

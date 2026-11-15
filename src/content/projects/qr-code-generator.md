@@ -8,7 +8,8 @@ categories: ["Tools"]
 stack: ["Python", "Flask", "JavaScript", "zxing-cpp"]
 featured: false
 order: 19
-cover: "A QR code with a logo blended into it, next to the live-preview controls."
+cover: "A blended-logo QR code beside the generator UI."
+image: "/images/qr-code-generator.jpg"
 ---
 
 ## Overview
@@ -22,7 +23,9 @@ A small single-page Flask app where every control change updates the QR preview 
 - Optional decode check (zxing-cpp) that reports whether the result actually scans.
 - A Claude Code skill (`qr-code`) that calls the same `/api/qr` engine, so asking Claude for a QR code with a logo gives identical output.
 
-![PLACEHOLDER: screenshot of the app with a blended-logo QR code](/placeholder.svg "QR generator UI")
+![The QR generator in the browser with live controls beside the preview.](/images/qr-ui.png "The generator UI")
+
+![A QR code with the Empathic Computing Lab logo blended into it.](/images/qr-blend.png "A blended-logo code that still scans")
 
 ## Outcome
 

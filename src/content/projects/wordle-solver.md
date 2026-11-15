@@ -6,6 +6,9 @@ role: "Solo developer"
 categories: ["Tools"]
 stack: ["Python", "Flask", "JavaScript"]
 order: 21
+cover: "A Wordle board beside a list of words that are still possible."
+image: "/images/wordle.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

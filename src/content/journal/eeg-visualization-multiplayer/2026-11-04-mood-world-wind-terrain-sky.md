@@ -11,7 +11,7 @@ facets: ["What I built"]
 
 The commit that evening added baked hierarchical wind (stored in vertex data) with a foliage shader that has per-leaf autumn colour, a generated 150 m dell terrain with a mask-driven ground shader, procedural grass, a split procedural sky with cloud shadows, rain, splash, leaf, mist and mote particles, and fog that is split per half along the view ray. A single `MoodAtmosphere` drives all the shader globals.
 
-![PLACEHOLDER: Screenshot of the forest mid-storm on one half and misty on the other, with the sky split at the border](/placeholder.svg "Split sky and per-half fog")
+![The same DuoLab scene pushed the other way: pale trees, haze and mist around the seated player.](/images/eeg-mood-forest-mist.png "The same forest pushed towards mist")
 
 ## Why — decisions and trade-offs
 

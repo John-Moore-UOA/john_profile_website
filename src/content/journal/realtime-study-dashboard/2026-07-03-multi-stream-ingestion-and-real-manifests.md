@@ -2,7 +2,7 @@
 project: "realtime-study-dashboard"
 title: "Ingesting several role-based LSL streams and adopting the real pipeline manifests"
 date: 2026-07-03
-session: "3-26 July"
+session: "Multi-stream ingestion"
 summary: "I moved from one sensor stream to several, with per-stream link status, then re-synced the manifests to the sensor pipeline's confirmed source of truth and fixed rules keyed on channels that did not exist."
 facets: ["What I built"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built"]
 
 On 3 July I added ingestion of multiple role-based LSL streams with per-stream link status and NaN handling for absent channels, and changed the cognitive-load rule to target the channel by category because it had become categorical. On 16 July I re-vendored the pipeline manifests, added a `LevelBar` renderer for ordinal categoricals, made the emotion channel use circumplex quadrant labels, honoured a rolling `window_s` chart window, and rewrote two affect rules to target the real emotion channel. On 21 July I condensed the Session Monitor layout and grouped the pipeline signals into a titled panel. On 25 July I fixed multi-stream XDF recording and made session start not block on LiveKit.
 
-![PLACEHOLDER: Screenshot of the Session Monitor with a level-bar cognitive load meter and the emotion quadrant](/placeholder.svg "Cognitive load and emotion renderers")
+![Diagram of two signal renderers: cognitive load as a LevelBar of stepped segments for an ordinal categorical channel, and emotion as a point in one highlighted quadrant of a valence and arousal circumplex.](/images/diagrams/dash-load-emotion.svg "Cognitive load and emotion renderers (diagram)")
 
 ## Why — decisions and trade-offs
 

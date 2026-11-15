@@ -6,6 +6,9 @@ role: "Solo"
 categories: ["AI", "Tools"]
 stack: ["Python", "pandas", "Jupyter", "scikit-learn"]
 order: 22
+cover: "A chart of minutes listened over time."
+image: "/images/spotify.svg"
+imageCredit: "Illustration made for this site"
 ---
 
 ## Overview

@@ -1,8 +1,8 @@
 ---
 project: "public-speaking-vr"
 title: "Writing the spec, plan and compile check before building the Lying Audiences prototype"
-date: 2026-11-11
-session: "Planning (11 Nov, morning)"
+date: 2026-11-11T01:00:00Z
+session: "Planning"
 summary: "I started the Lying Audiences prototype from a written spec and a resumable task plan, with a compile-check script, because agents could not drive the Unity editor."
 facets: ["Overview", "What I built"]
 ---
@@ -11,8 +11,7 @@ facets: ["Overview", "What I built"]
 
 The project starts from a Unity VR template. The first commits added the spec, a standalone compile-check script, an implementation plan with a task list (T1 to T13), a `PROGRESS.md` tracker and an HTML export of the plan. The spec describes a VR public-speaking study prototype for a poster: five audience members whose attention drains and recovers with the speaker's head gaze, body language that is always truthful, and an aura whose honesty is the manipulation.
 
-![PLACEHOLDER: Diagram: PLAN.md task chain T1-T13 with PROGRESS.md as the resume point and the compile check after each task](/placeholder.svg "Plan, track, compile-check loop")
-
+![Plan, track, compile-check loop: PLAN.md holds a chain of tasks T1 to T13, PROGRESS.md is the resume point, and a compile check runs after each task.](/images/diagrams/ps-plan-chain.svg "Plan, track, compile-check loop")
 ## Why — decisions and trade-offs
 
 - **Resumable by design.** The spec asks for a progress file and one task per pass, so work can continue from the first task that is not DONE in a fresh session after a usage limit.

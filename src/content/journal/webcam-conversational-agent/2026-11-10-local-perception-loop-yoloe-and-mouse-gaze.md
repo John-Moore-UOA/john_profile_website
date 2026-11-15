@@ -2,7 +2,7 @@
 project: "webcam-conversational-agent"
 title: "A local YOLOE perception loop, with the mouse standing in for eye gaze"
 date: 2026-11-10
-session: "Day 3: perception loop (T1-T11)"
+session: "Perception loop"
 summary: "I made the agent work with only a webcam: a local segmentation model tracks objects continuously, the mouse cursor replaces eye gaze in the same referent scorer, and a relational Gemini step deepens the hovered object."
 facets: ["What I built", "Outcome"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built", "Outcome"]
 
 First a commit of webcam-only mode with a live page and attention prototype. Then tasks T1 to T10 and a report: a prompt-free YOLOE segmentation model in its own spawned worker process using shared-memory frames and a motion gate; a track registry with stable ids, a label vote and re-identification; mouse gaze converted into per-object gaze angles so the existing scorer is unchanged; a `/live` page that draws masks, ids, names, focus and belief bars; a set-of-marks scene check where Gemini names each track id; lenses (general relational, painting, a historic-site stub) with a claim guard; and a replay tool. Per the report, pytest went from 234 to 259 passing.
 
-![PLACEHOLDER: Screenshot of the /live page: webcam view with coloured object masks, track ids and names, focus highlight and belief bars](/placeholder.svg "Live perception page")
+![Diagram of the /live page: the webcam view with a coloured mask over each tracked object, each tagged with a track id and name, one object marked as the current focus, and a belief bar per track beside it.](/images/diagrams/webcam-live-page.svg "Live perception page (diagram)")
 
 ## Why — decisions and trade-offs
 

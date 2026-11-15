@@ -11,7 +11,7 @@ facets: ["Environment design", "Interaction design"]
 
 Created the Unity project on 24 August and had the apartment scene in by the 25th. Then I made the furniture usable: a toaster that highlights, drawers you pull and slide open, and drawer slots that hold items. On 31 August "RecipeGoalCompletion" started working, along with item respawning and the first multi-ingredient food (cheese, tomato, lettuce). The second week added a blender and a coffee machine.
 
-![PLACEHOLDER: Early screenshot of the apartment scene in the Unity editor with a drawer pulled open and an item highlighted](/placeholder.svg "The first version of the kitchen")
+![The apartment kitchen in the Unity editor.](/images/masters/kitchen.png "The kitchen scene in the Unity editor")
 
 ## Why — decisions and trade-offs
 

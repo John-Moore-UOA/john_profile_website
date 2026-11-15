@@ -2,7 +2,7 @@
 project: "tts-studio"
 title: "Adding Qwen3-TTS as a second engine in its own venv, with voice design"
 date: 2026-11-12
-session: "Session 2: Studio"
+session: "Studio"
 summary: "I turned the cache tooling into a browser Studio and added Qwen3-TTS (voice design from a description) as an out-of-process second engine that swaps with Chatterbox on an 8 GB card."
 facets: ["What I built", "Why"]
 ---
@@ -11,7 +11,7 @@ facets: ["What I built", "Why"]
 
 The 12 November commit adds the Studio server and page (stories, takes, scratch tabs, Whisper scoring), a voice tab with a designer and dated voice library, a bottom render-queue dock with tokens per second and cancel, an MCP server and CLI so Claude can drive the Studio, requirements files, a model setup script and a "set this project up" section in `CLAUDE.md`. Work before the commit may span several days; only the commit date is in git. <!-- TODO: verify when the Studio work started -->
 
-![PLACEHOLDER: screenshot of the Voice tab with the designer and the render-queue dock showing tokens/s](/placeholder.svg "Voice designer and render dock")
+![Diagram of the Studio Voice tab: a voice designer where a voice is described and designed, a dated voice library, and a render-queue dock along the bottom showing queued renders, tokens per second and a cancel button.](/images/diagrams/tts-voice-tab.svg "Voice designer and render dock (diagram)")
 
 ## Why — decisions and trade-offs
 

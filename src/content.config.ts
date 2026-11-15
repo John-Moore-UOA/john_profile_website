@@ -13,11 +13,13 @@ const projects = defineCollection({
     categories: z.array(z.enum(CATEGORIES)).min(1),
     stack: z.array(z.string()),
     featured: z.boolean().default(false),
+    spotlight: z.boolean().default(false), // opened up with image + paragraph at the top of the home index
     order: z.number().default(50),
     related: z.array(z.string()).default([]),
     links: z.object({ github: z.string().url().optional(), demo: z.string().url().optional() }).default({}),
     cover: z.string().optional(),
-    image: z.string().optional(), // e.g. /images/projects/<slug>.jpg
+    image: z.string().optional(),
+    imageCredit: z.string().optional(), // e.g. /images/projects/<slug>.jpg
     status: z.string().optional(), // kept for notes; not shown
   }),
 });
